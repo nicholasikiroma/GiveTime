@@ -5,7 +5,8 @@ GiveTime is a web-based platform that aims to connect volunteers with non-profit
 
 By providing a platform where volunteers can easily search and find volunteering opportunities that match their preferences, GiveTime hopes to increase the number of volunteers and improve the efficiency of volunteer recruitment and management for non-profit organizations. The platform can also help to build a community of volunteers and non-profit organizations that share a common goal of making a positive impact in their local communities.
 
-GiveTime's key features include a search engine that allows volunteers to search for volunteering opportunities based on various criteria such as location, skills required, and cause area. Non-profit organizations can also create profiles on the platform and advertise their opportunities, manage volunteers, and track their impact. 
+GiveTime's key features include a search engine that allows volunteers to search for volunteering opportunities based on various criteria such as location, skills required, and cause area. Non-profit organizations can also create profiles on the platform and advertise their opportunities, manage volunteers, and track their impact.
+
 ---
 ## MVPs for GiveTime:
 
