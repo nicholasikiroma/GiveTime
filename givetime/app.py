@@ -2,15 +2,19 @@
 """Base Application for GiveTime"""
 from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
+from auth import nonprofit_auth, volunteer_auth
 
 
 app = Flask('__name__')
+app.register_blueprint(nonprofit_auth.bp)
+app.register_blueprint(volunteer_auth.bp)
 
 
 @app.route('/')
 def index():
     """Renders template for home page"""
     return render_template('index.html')
+
 
 @app.route('/explore')
 def explore():
