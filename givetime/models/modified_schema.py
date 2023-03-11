@@ -1,20 +1,17 @@
-#!/usr/bin/python3
-"""Defines models for nonprofits"""
 from flask_sqlalchemy import SQLAlchemy
-
 
 db = SQLAlchemy()
 
 
+
 class Nonprofit(db.Model):
     """Models nonprofit"""
-    __table__ = 'nonproft'
+    __tablename__ = 'nonprofit'
 
     nonprofit_id = db.Column(db.Integer, primary_key=True)
-    volunteer_id = db.Column(db.Integer, db.ForeignKey('volunteer.volunteer_id'), nullable=False)
     name = db.Column(db.String(255), nullable=False)
     description = db.Column(db.String, nullable=False)
-    email = db.Column(db.String(45), nullable=False)
+    email = db.Column(db.String(45), nullable=False, unique=True)
     phone = db.Column(db.String(45), nullable=False)
     website = db.Column(db.String(255), nullable=False)
     address = db.Column(db.String(255), nullable=False)
@@ -22,7 +19,7 @@ class Nonprofit(db.Model):
     registration_date = db.Column(db.DateTime, nullable=False)
     verification_status = db.Column(db.Boolean, nullable=False)
     password_hash = db.Column(db.String(255), nullable=False)
-    volunteer = db.relationship("Volunteer", back_populates="nonprofits")
+    volunteers = db.relationship("Volunteer", secondary="nonprofit_volunteer", back_populates="nonprofits")
 
 
 class Volunteer(db.Model):
@@ -34,41 +31,61 @@ class Volunteer(db.Model):
     last_name = db.Column(db.String(256), nullable=False)
     skill = db.Column(db.String(45), nullable=False)
     location = db.Column(db.String(45), nullable=False)
-    password_hash = db.Column(db.String(45), nullable=False)
-    email = db.Column(db.String(45), nullable=False)
-    interests = db.Column(db.String(45), nullable=False)
-    state = db.Column(db.String(45), nullable=False)
-    city = db.Column(db.String(45), nullable=False)
+    password_hash = db.Column(db.String(255), nullable=False)
+    email = db.Column(db.String(45), nullable=False, unique=True)
+    interests = db.relationship("Interest", secondary="volunteer_interest", back_populates="volunteers")
+    nonprofits = db.relationship("Nonprofit", secondary="nonprofit_volunteer", back_populates="volunteers")
 
 
 class VolunteerOpportunities(db.Model):
     """Schema for volunteer opportunities"""
     __tablename__ = 'volunteer_opportunities'
-    
+
     opp_id = db.Column(db.Integer, primary_key=True)
     opp_title = db.Column(db.String(45), nullable=False)
     nonprofit_id = db.Column(db.Integer, db.ForeignKey('nonprofit.nonprofit_id'), nullable=False)
+    nonprofit = db.relationship("Nonprofit", back_populates="volunteer_opportunities")
     opp_description = db.Column(db.String(256), nullable=False)
     opp_location = db.Column(db.String(45), nullable=False)
     opp_start_date = db.Column(db.DateTime, nullable=False)
     opp_end_date = db.Column(db.DateTime, nullable=False)
-    tags = db.relationship('VolunteerOpportunitiesTag', back_populates='opportunities')
+    tags = db.relationship('Tag', secondary='volunteer_opportunities_tag', back_populates='volunteer_opportunities')
 
 
 class VolunteerOpportunitiesTag(db.Model):
     """Schema for volunteer opportunities tag"""
     __tablename__ = 'volunteer_opportunities_tag'
-    
+
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    tag = db.Column(db.String(45), nullable=False)
+    tag_id = db.Column(db.Integer, db.ForeignKey('tag.id'), nullable=False)
     opportunities_id = db.Column(db.Integer, db.ForeignKey('volunteer_opportunities.opp_id'))
-    opportunities = db.relationship('VolunteerOpportunities', back_populates='tags')
+    volunteer_opportunities = db.relationship('VolunteerOpportunities', back_populates='tags')
+    tag = db.relationship('Tag', back_populates='volunteer_opportunities')
 
 
-class Tags(db.Model):
+class Tag(db.Model):
     """Schema for tags"""
-    __tablename__ = 'tags'
+    __tablename__ = 'tag'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    name = db.Column(db.String(45), nullable=False, unique=True)
+    volunteer_opportunities = db.relationship('VolunteerOpportunitiesTag', back_populates='tag')
+    volunteers = db.relationship("Volunteer", secondary="volunteer_interest", back_populates="interests")
+
+
+class Interest(db.Model):
+    """Schema for volunteer interests"""
+    __tablename__ = 'interests'
+
+    id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(45), nullable=False)
-    id_1 = db.Column(db.Integer, db.ForeignKey('volunteer_opportunities_tag.id'), nullable=False)
+
+
+class VolunteerInterest(db.Model):
+    """Association table for Volunteer and Interest"""
+    __tablename__ = 'volunteer_interest'
+
+    volunteer_id = db.Column(db.Integer, db.ForeignKey('volunteer.volunteer_id'), primary_key=True)
+    interest_id = db.Column(db.Integer, db.ForeignKey('interests.id'), primary_key=True)
+    volunteer = db.relationship("Volunteer", back_populates="interests")
+    interest = db.relationship("Interest", back_populates="volunteers")
