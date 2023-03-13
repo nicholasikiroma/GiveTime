@@ -1,4 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
+from uuid import uuid4
+
 
 db = SQLAlchemy()
 
@@ -8,15 +11,18 @@ class Nonprofit(db.Model):
     """Models nonprofit"""
     __tablename__ = 'nonprofit'
 
-    nonprofit_id = db.Column(db.Integer, primary_key=True)
+    nonprofit_id = db.Column(db.Integer, primary_key=True, default=uuid4())
     name = db.Column(db.String(255), nullable=False)
     description = db.Column(db.String, nullable=False)
     email = db.Column(db.String(45), nullable=False, unique=True)
     phone = db.Column(db.String(45), nullable=False)
-    website = db.Column(db.String(255), nullable=False)
+    website = db.Column(db.String(255), nullable=True)
     address = db.Column(db.String(255), nullable=False)
+    city = db.Column(db.String, nullable=False)
+    state = db.Column(db.String, nullable=False)
     social_media_links = db.Column(db.String(255))
-    registration_date = db.Column(db.DateTime, nullable=False)
+    registration_date = db.Column(db.DateTime, nullable=False,
+                                  default=datetime.utcnow())
     verification_status = db.Column(db.Boolean, nullable=False)
     password_hash = db.Column(db.String(255), nullable=False)
     volunteers = db.relationship("Volunteer", secondary="nonprofit_volunteer", back_populates="nonprofits")
@@ -26,14 +32,14 @@ class Volunteer(db.Model):
     """Schema for volunteer"""
     __tablename__ = 'volunteer'
 
-    volunteer_id = db.Column(db.Integer, primary_key=True)
+    volunteer_id = db.Column(db.Integer, primary_key=True, default=uuid4())
     first_name = db.Column(db.String(256), nullable=False)
     last_name = db.Column(db.String(256), nullable=False)
     skill = db.Column(db.String(45), nullable=False)
     location = db.Column(db.String(45), nullable=False)
     password_hash = db.Column(db.String(255), nullable=False)
     email = db.Column(db.String(45), nullable=False, unique=True)
-    interests = db.relationship("Interest", secondary="volunteer_interest", back_populates="volunteers")
+    category = db.relationship("Interest", secondary="volunteer_interest", back_populates="volunteers")
     nonprofits = db.relationship("Nonprofit", secondary="nonprofit_volunteer", back_populates="volunteers")
 
 
@@ -41,7 +47,7 @@ class VolunteerOpportunities(db.Model):
     """Schema for volunteer opportunities"""
     __tablename__ = 'volunteer_opportunities'
 
-    opp_id = db.Column(db.Integer, primary_key=True)
+    opp_id = db.Column(db.Integer, primary_key=True, default=uuid4())
     opp_title = db.Column(db.String(45), nullable=False)
     nonprofit_id = db.Column(db.Integer, db.ForeignKey('nonprofit.nonprofit_id'), nullable=False)
     nonprofit = db.relationship("Nonprofit", back_populates="volunteer_opportunities")
@@ -70,12 +76,12 @@ class Tag(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(45), nullable=False, unique=True)
     volunteer_opportunities = db.relationship('VolunteerOpportunitiesTag', back_populates='tag')
-    volunteers = db.relationship("Volunteer", secondary="volunteer_interest", back_populates="interests")
+    volunteers = db.relationship("Volunteer", secondary="volunteer_interest", back_populates="category")
 
 
-class Interest(db.Model):
+class Category(db.Model):
     """Schema for volunteer interests"""
-    __tablename__ = 'interests'
+    __tablename__ = 'category'
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(45), nullable=False)
@@ -86,6 +92,6 @@ class VolunteerInterest(db.Model):
     __tablename__ = 'volunteer_interest'
 
     volunteer_id = db.Column(db.Integer, db.ForeignKey('volunteer.volunteer_id'), primary_key=True)
-    interest_id = db.Column(db.Integer, db.ForeignKey('interests.id'), primary_key=True)
-    volunteer = db.relationship("Volunteer", back_populates="interests")
+    interest_id = db.Column(db.Integer, db.ForeignKey('category.id'), primary_key=True)
+    volunteer = db.relationship("Volunteer", back_populates="category")
     interest = db.relationship("Interest", back_populates="volunteers")

@@ -1,8 +1,14 @@
 #!/usr/bin/python3
-"""Base Application for GiveTime"""
+"""Base Flask Application for GiveTime"""
 from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
+from models.modified_schema import app
 from auth import nonprofit_auth, volunteer_auth
+import os
+
+base_dir = os.path.dirname(os.path.realpath(__file__))
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + os.path.join(
+    base_dir, 'givetime.db')
 
 
 app = Flask('__name__')
