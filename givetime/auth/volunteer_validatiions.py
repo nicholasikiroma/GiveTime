@@ -1,15 +1,17 @@
 #!/usr/bin/python3
 """Handles form validations for volunteer authentication"""
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, PasswordField, SubmitField
+from wtforms import StringField, IntegerField, TextAreaField, PasswordField, SubmitField
 from wtforms.validators import InputRequired, Length, EqualTo
 
 
 class VolunteerSignUpForm(FlaskForm):
     """Defines Validators for nonprofit sign-up form"""
-    name = StringField(label='Organisation Name', validators=
-                           [InputRequired(message="Organisation name cannot be blank"),
-                            Length(min=5,max=50)])
+    first_name = StringField(label='First Name', validators=
+                           [InputRequired(message="Field cannot be blank")])
+
+    last_name = StringField(label='Last Name', validators=
+                           [InputRequired(message="Field cannot be blank")])
 
     email = StringField(label='Email Address',
                         validators=[InputRequired(message="email name should not be blank"),
@@ -21,14 +23,16 @@ class VolunteerSignUpForm(FlaskForm):
     
     skills = TextAreaField(lable='Skill',
                                 validators=[InputRequired(message='Provide short description of your NGO')])
-    
 
-    website = StringField(label='Website URL')
 
     city = StringField(label='City', validators=[InputRequired(message='Provide city')])
 
     state = StringField(label='State', validators=[InputRequired(message='Provide city')])
 
+
+    phone = IntegerField(lable='Description',
+                                validators=[InputRequired(message='Enter a valid phone number'),
+                                            Length(max=11, min=11)])
 
 
     confirm_password = PasswordField(label='Confirm Password', validators=

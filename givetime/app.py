@@ -1,17 +1,25 @@
 #!/usr/bin/python3
 """Base Flask Application for GiveTime"""
 from flask import Flask, render_template
-from flask_sqlalchemy import SQLAlchemy
-from models.modified_schema import app
+from flask_login import LoginManager
+from models.modified_schema import db
 from auth import nonprofit_auth, volunteer_auth
 import os
+
+
+app = Flask('__name__')
+db.init_app(app)
+
+login_manager = LoginManager()
+
+login_manager.init_app(app)
+
 
 base_dir = os.path.dirname(os.path.realpath(__file__))
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + os.path.join(
     base_dir, 'givetime.db')
 
 
-app = Flask('__name__')
 app.register_blueprint(nonprofit_auth.bp)
 app.register_blueprint(volunteer_auth.bp)
 

@@ -6,21 +6,21 @@ from uuid import uuid4
 db = SQLAlchemy()
 
 
-
 class Nonprofit(db.Model):
     """Models nonprofit"""
     __tablename__ = 'nonprofit'
 
-    nonprofit_id = db.Column(db.Integer, primary_key=True, default=uuid4())
-    name = db.Column(db.String(255), nullable=False)
-    description = db.Column(db.String, nullable=False)
+    id = uuid4()
+    nonprofit_id = db.Column(db.String, primary_key=True, default=id)
+    name = db.Column(db.String(255), nullable=False, unique=True)
+    description = db.Column(db.Text, nullable=False)
     email = db.Column(db.String(45), nullable=False, unique=True)
     phone = db.Column(db.String(45), nullable=False)
     website = db.Column(db.String(255), nullable=True)
     address = db.Column(db.String(255), nullable=False)
     city = db.Column(db.String, nullable=False)
     state = db.Column(db.String, nullable=False)
-    social_media_links = db.Column(db.String(255))
+    social_media_links = db.Column(db.String(255), nullable=True)
     registration_date = db.Column(db.DateTime, nullable=False,
                                   default=datetime.utcnow())
     verification_status = db.Column(db.Boolean, nullable=False)
@@ -31,12 +31,13 @@ class Nonprofit(db.Model):
 class Volunteer(db.Model):
     """Schema for volunteer"""
     __tablename__ = 'volunteer'
-
-    volunteer_id = db.Column(db.Integer, primary_key=True, default=uuid4())
+    id = uuid4()
+    volunteer_id = db.Column(db.Integer, primary_key=True, default=id)
     first_name = db.Column(db.String(256), nullable=False)
     last_name = db.Column(db.String(256), nullable=False)
     skill = db.Column(db.String(45), nullable=False)
-    location = db.Column(db.String(45), nullable=False)
+    city = db.Column(db.String, nullable=False)
+    state = db.Column(db.String, nullable=False)
     password_hash = db.Column(db.String(255), nullable=False)
     email = db.Column(db.String(45), nullable=False, unique=True)
     category = db.relationship("Interest", secondary="volunteer_interest", back_populates="volunteers")
@@ -47,7 +48,8 @@ class VolunteerOpportunities(db.Model):
     """Schema for volunteer opportunities"""
     __tablename__ = 'volunteer_opportunities'
 
-    opp_id = db.Column(db.Integer, primary_key=True, default=uuid4())
+    id = uuid4()
+    opp_id = db.Column(db.Integer, primary_key=True, default=id)
     opp_title = db.Column(db.String(45), nullable=False)
     nonprofit_id = db.Column(db.Integer, db.ForeignKey('nonprofit.nonprofit_id'), nullable=False)
     nonprofit = db.relationship("Nonprofit", back_populates="volunteer_opportunities")
