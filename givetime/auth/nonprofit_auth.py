@@ -2,11 +2,10 @@
 """Blueprint for Nonprofit authentication"""
 from flask import Blueprint, render_template, flash, redirect, request, url_for
 from werkzeug.security import generate_password_hash, check_password_hash
-from nonprofit_validations import NonprofitLoginForm, NonprofitSignUpForm
+from auth.nonprofit_validations import NonprofitLoginForm, NonprofitSignUpForm
 from models.modified_schema import Nonprofit
 from flask_login import login_user, logout_user
-from app import db
-
+from auth import db
 
 nonprofit_bp = Blueprint('nonprofit_auth',
                          __name__, url_prefix='/auth/nonprofit')

@@ -3,7 +3,7 @@
 from app import db
 from flask import Blueprint, render_template, redirect, request, url_for, flash
 from flask_login import login_user, logout_user
-from volunteer_validatiions import VolunteerLoginForm, VolunteerSignUpForm
+from auth.volunteer_validatiions import VolunteerLoginForm, VolunteerSignUpForm
 from models.modified_schema import Volunteer
 from werkzeug.security import generate_password_hash, check_password_hash
 

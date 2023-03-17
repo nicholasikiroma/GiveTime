@@ -23,7 +23,7 @@ class Nonprofit(db.Model):
     social_media_links = db.Column(db.String(255), nullable=True)
     registration_date = db.Column(db.DateTime, nullable=False,
                                   default=datetime.utcnow())
-    verification_status = db.Column(db.Boolean, nullable=False)
+    verification_status = db.Column(db.Boolean, nullable=False, default=False)
     password_hash = db.Column(db.String(255), nullable=False)
     volunteers = db.relationship("Volunteer", secondary="nonprofit_volunteer", back_populates="nonprofits")
 
