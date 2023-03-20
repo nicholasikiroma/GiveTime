@@ -8,8 +8,7 @@ class Nonprofit(db.Model):
     """Models nonprofit"""
     __tablename__ = 'nonprofit'
 
-    id = uuid4()
-    nonprofit_id = db.Column(db.String, primary_key=True, default=id)
+    nonprofit_id = db.Column(db.String, primary_key=True)
     name = db.Column(db.String(255), nullable=False, unique=True)
     description = db.Column(db.Text, nullable=False)
     email = db.Column(db.String(45), nullable=False, unique=True)
@@ -24,6 +23,25 @@ class Nonprofit(db.Model):
     verification_status = db.Column(db.Boolean, nullable=False, default=False)
     password_hash = db.Column(db.String(255), nullable=False)
     volunteers = db.relationship("Volunteer", secondary="nonprofit_volunteer", back_populates="nonprofits")
+
+
+    def create(self, name, description, email, phone, website,
+               address, city, state, password):
+        """Creates new entry"""
+        nonprofit_id = str(uuid4())
+        nonprofit = Nonprofit(nonprofit_id=nonprofit_id,
+                              name=name,
+                              description=description,
+                              email=email,
+                              phone=phone,
+                              website=website,
+                              address=address,
+                              city=city,
+                              state=state,
+                              password_hash=password)
+
+        db.session.add(nonprofit)
+        db.session.commit()
 
 
 class Volunteer(db.Model):
@@ -42,6 +60,27 @@ class Volunteer(db.Model):
     nonprofits = db.relationship("Nonprofit", secondary="nonprofit_volunteer", back_populates="volunteers")
 
 
+
+    def create(self, first_name, last_name, skill, email, phone, website,
+               address, city, state, password):
+        """Creates new entry"""
+        volunteer_id = str(uuid4())
+        volunteer = Volunteer(volunteer_id=volunteer_id,
+                              first_name=first_name,
+                              last_name=last_name,
+                              skill=skill,
+                              email=email,
+                              phone=phone,
+                              website=website,
+                              address=address,
+                              city=city,
+                              state=state,
+                              password_hash=password)
+
+        db.session.add(volunter)
+        db.session.commit()
+
+
 class VolunteerOpportunities(db.Model):
     """Schema for volunteer opportunities"""
     __tablename__ = 'volunteer_opportunities'
@@ -53,9 +92,23 @@ class VolunteerOpportunities(db.Model):
     nonprofit = db.relationship("Nonprofit", back_populates="volunteer_opportunities")
     opp_description = db.Column(db.String(256), nullable=False)
     opp_location = db.Column(db.String(45), nullable=False)
-    opp_start_date = db.Column(db.DateTime, nullable=False)
-    opp_end_date = db.Column(db.DateTime, nullable=False)
+    opp_start_date = db.Column(db.DateTime, nullable=True)
+    opp_end_date = db.Column(db.DateTime, nullable=True)
     tags = db.relationship('Tag', secondary='volunteer_opportunities_tag', back_populates='volunteer_opportunities')
+
+
+    def create(self, opp_title, description, tags,
+               opp_start_date, opp_end_date):
+        """Creates new entry"""
+        opp_id = str(uuid4())
+        opportunity = VolunteerOpportunities(opp_id=opp_id,
+                                             opp_title=opp_title,
+                                             opp_description=description,
+                                             tags=tags,
+                                             opp_start_date=opp_start_date,
+                                             opp_end_date=opp_end_date)
+        db.session.add(opportunity)
+        db.session.commit()
 
 
 class VolunteerOpportunitiesTag(db.Model):

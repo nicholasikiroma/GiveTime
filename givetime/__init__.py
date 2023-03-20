@@ -16,6 +16,8 @@ def create_app():
 
     db.init_app(app)
 
+    with app.app_context():
+        db.create_all()
 
     @app.route('/')
     def index():
@@ -32,7 +34,7 @@ def create_app():
     @app.route('/about')
     def about():
         return render_template('about.html')
-    
+
     from givetime.auth.nonprofit_auth import nonprofit_bp
     from givetime.auth.volunteer_auth import volunteer_bp
 
