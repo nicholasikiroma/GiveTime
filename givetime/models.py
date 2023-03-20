@@ -1,10 +1,8 @@
-from flask_sqlalchemy import SQLAlchemy
+from givetime import create_app
 from datetime import datetime
 from uuid import uuid4
 
-
-db = SQLAlchemy()
-
+db = create_app().db
 
 class Nonprofit(db.Model):
     """Models nonprofit"""

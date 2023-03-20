@@ -1,10 +1,8 @@
 #!/usr/bin/python3
 """Blueprint for volunteer authentication"""
-from app import db
 from flask import Blueprint, render_template, redirect, request, url_for, flash
 from flask_login import login_user, logout_user
-from auth.volunteer_validatiions import VolunteerLoginForm, VolunteerSignUpForm
-from models.modified_schema import Volunteer
+from givetime.auth.volunteer_validatiions import VolunteerLoginForm, VolunteerSignUpForm
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
@@ -30,6 +28,7 @@ def volunteer_reg():
         skill = request.form.get('skills')
 
         # checks if email address exists in database
+        from givetime.models import Volunteer
         check_email = Volunteer.query.filter_by(email=email).first()
         if check_email:
             flash(f'Nonprofit with {email} already exists....try something different.')
@@ -40,6 +39,8 @@ def volunteer_reg():
                                   email=email,password_hash=password_hash, city=city,
                                   phone=phone_no, address=address, state=state,
                                   skill=skill)
+        
+        from givetime import db
 
         db.session.add(new_nonprofit)
         db.session.commit()
@@ -57,6 +58,7 @@ def voluneer_login():
         email = request.form.get('email')
         password = request.form.get('password')
         
+        from givetime.models import Volunteer
         user_email = Volunteer.query.filter_by(email=email).first()
         if user_email and check_password_hash(user_email.password_hash, password):
             login_user(user_email)

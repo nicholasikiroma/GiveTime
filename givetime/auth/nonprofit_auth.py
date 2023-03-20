@@ -2,10 +2,9 @@
 """Blueprint for Nonprofit authentication"""
 from flask import Blueprint, render_template, flash, redirect, request, url_for
 from werkzeug.security import generate_password_hash, check_password_hash
-from auth.nonprofit_validations import NonprofitLoginForm, NonprofitSignUpForm
-from models.modified_schema import Nonprofit
+from givetime.auth.nonprofit_validations import NonprofitLoginForm, NonprofitSignUpForm
 from flask_login import login_user, logout_user
-from auth import db
+
 
 nonprofit_bp = Blueprint('nonprofit_auth',
                          __name__, url_prefix='/auth/nonprofit')
@@ -29,6 +28,7 @@ def nonprofit_reg():
         address = request.form.get('address')
 
         # checks if username exists in database
+        from givetime.models import Nonprofit
         check_username = Nonprofit.query.filter_by(name=name).first()
         if check_username:
             flash(f'{name} already exists....try something different.')
@@ -48,6 +48,8 @@ def nonprofit_reg():
                          city=city, phone=phone_no, address=address,
                          state=state, verificaton_status=status,
                          website=website_url)
+        
+        from givetime import db
 
         db.session.add(new_nonprofit)
         db.session.commit()
@@ -66,6 +68,7 @@ def nonprofit_login():
         email = request.form.get('email')
         password = request.form.get('password')
         
+        from givetime.models import Nonprofit
         user_email = Nonprofit.query.filter_by(email=email).first()
         if user_email and check_password_hash(user_email.password_hash, password):
             login_user(user_email)
