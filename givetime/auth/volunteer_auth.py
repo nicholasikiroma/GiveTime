@@ -35,15 +35,13 @@ def volunteer_reg():
             return redirect(url_for('sign_up'))
 
         password_hash = generate_password_hash(password)
-        new_nonprofit = Volunteer(first_name=first_name, last_name=last_name,
-                                  email=email,password_hash=password_hash, city=city,
-                                  phone=phone_no, address=address, state=state,
-                                  skill=skill)
-        
-        from givetime import db
+        new_volunteer = Volunteer()
 
-        db.session.add(new_nonprofit)
-        db.session.commit()
+        new_volunteer.create(first_name=first_name, last_name=last_name,
+                             email=email,city=city,
+                             state=state, skill=skill,
+                             phone=phone_no, password=password_hash)  
+
         flash('Account created successfully!')
         return redirect(url_for('login'))
     return render_template('nonprofit_auth.html', form=form)

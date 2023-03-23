@@ -22,8 +22,9 @@ def nonprofit_reg():
         bio = request.form.get('description')
         website_url = request.form.get('website')
         city = request.form.get('city')
-        state = request.form.get('state')     
-        status = request.form.get('cac_num') # Implement AJAX Verification of CAC num
+        state = request.form.get('state')
+        # Implement AJAX Verification of CAC num
+        status = request.form.get('cac_num')
         phone_no = request.form.get('phone')
         address = request.form.get('address')
 
@@ -33,26 +34,22 @@ def nonprofit_reg():
         if check_username:
             flash(f'{name} already exists....try something different.')
             return redirect(url_for('sign_up', form=form))
-        
 
         # checks if email address exists in database
         check_email = Nonprofit.query.filter_by(email=email).first()
         if check_email:
-            flash(f'Nonprofit with {email} already exists....try something different.')
+            flash(
+                f'Nonprofit with {email} already exists....try something different.')
             return redirect(url_for('sign_up'))
 
         password_hash = generate_password_hash(password)
-        new_nonprofit = Nonprofit(name=name,
-                         email=email,
-                         password_hash=password_hash, description=bio,
-                         city=city, phone=phone_no, address=address,
-                         state=state, verificaton_status=status,
-                         website=website_url)
-        
-        from givetime import db
+        new_nonprofit = Nonprofit()
 
-        db.session.add(new_nonprofit)
-        db.session.commit()
+        new_nonprofit.create(name=name, email=email,
+                             password=password_hash, description=bio,
+                             city=city, phone=phone_no, address=address,
+                             state=state, website=website_url, status=False)
+
         flash('Account created successfully!')
         return redirect(url_for('login'))
 
@@ -67,7 +64,7 @@ def nonprofit_login():
     if request.method == 'POST' and form.validate_on_submit():
         email = request.form.get('email')
         password = request.form.get('password')
-        
+
         from givetime.models import Nonprofit
         user_email = Nonprofit.query.filter_by(email=email).first()
         if user_email and check_password_hash(user_email.password_hash, password):
@@ -76,7 +73,6 @@ def nonprofit_login():
         else:
             flash('email/password Incorrect')
             return redirect(url_for('login'))
-
 
     return render_template('nonprofit_auth.html', form=form)
 
