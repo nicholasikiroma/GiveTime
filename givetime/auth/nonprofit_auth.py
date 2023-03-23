@@ -13,7 +13,7 @@ nonprofit_bp = Blueprint('nonprofit_auth',
 @nonprofit_bp.route('/register', methods=['Post', 'GET'])
 def nonprofit_reg():
     """Renders registraton page for nonprofit"""
-    form = NonprofitSignUpForm()
+#    form = NonprofitSignUpForm()
 
     if request.method == 'POST' and form.validate_on_submit():
         name = request.form.get('name')
@@ -53,7 +53,7 @@ def nonprofit_reg():
         flash('Account created successfully!')
         return redirect(url_for('login'))
 
-    return render_template('nonprofit_auth.html', form=form)
+    return render_template('auth/signup_nonprofit.html') # form=form)
 
 
 @nonprofit_bp.route('/login')
@@ -72,9 +72,9 @@ def nonprofit_login():
             return redirect(url_for('index'))
         else:
             flash('email/password Incorrect')
-            return redirect(url_for('login'))
+            return redirect(url_for('nonprofit_login'))
 
-    return render_template('nonprofit_auth.html', form=form)
+    return render_template('auth/nonprofit_signup.html', form=form)
 
 
 @nonprofit_bp.route("/logout")

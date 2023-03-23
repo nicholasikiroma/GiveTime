@@ -14,14 +14,10 @@ def create_app():
     base_dir = os.path.dirname(os.path.realpath(__file__))
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + os.path.join(
         base_dir, 'givetimeStorage.db')
+    app.secret_key = '8745f7abde63c4ba78c4d60c863ded4eaf4bdf239dc3d2c866364629ab07f73b'
 
     db.init_app(app)
 
-    from givetime.auth.nonprofit_auth import nonprofit_bp
-    from givetime.auth.volunteer_auth import volunteer_bp
-
-    app.register_blueprint(nonprofit_bp)
-    app.register_blueprint(volunteer_bp)
 
     @app.route('/')
     def index():
@@ -29,16 +25,22 @@ def create_app():
         return render_template('index.html')
 
 
-    @app.route('/explore')
-    def explore():
+    @app.route('/registration')
+    def register():
         """Renders the html template for the explore page"""
-        return render_template('explore.html')
+        return render_template('registration.html')
 
 
     @app.route('/about')
     def about():
         return render_template('about.html')
 
+
+    from givetime.auth.nonprofit_auth import nonprofit_bp
+    from givetime.auth.volunteer_auth import volunteer_bp
+
+    app.register_blueprint(nonprofit_bp)
+    app.register_blueprint(volunteer_bp)
 
 
     from givetime import modified_model

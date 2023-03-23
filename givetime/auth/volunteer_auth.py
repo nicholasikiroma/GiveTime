@@ -14,7 +14,7 @@ volunteer_bp = Blueprint('volunteer_auth',
 @volunteer_bp.route('/register')
 def volunteer_reg():
     """Renders registraton page for nonprofit"""
-    form = VolunteerSignUpForm()
+ #   form = VolunteerSignUpForm()
 
     if request.method == 'POST' and form.validate_on_submit():
         first_name = request.form.get('first_name')
@@ -44,13 +44,14 @@ def volunteer_reg():
 
         flash('Account created successfully!')
         return redirect(url_for('login'))
-    return render_template('nonprofit_auth.html', form=form)
+
+    return render_template('auth/signup.html') #form=form)
 
 
 @volunteer_bp.route('/login')
 def voluneer_login():
     """Renders registraton page for nonprofit"""
-    form = VolunteerLoginForm()
+ #   form = VolunteerLoginForm()
 
     if request.method == 'POST' and form.validate_on_submit():
         email = request.form.get('email')
@@ -65,7 +66,7 @@ def voluneer_login():
             flash('email/password Incorrect')
             return redirect(url_for('login'))
 
-    return render_template('nonprofit_auth.html', form=form)
+    return render_template('auth/login.html') # form=form)
 
 
 @volunteer_bp.route("/logout")
