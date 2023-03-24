@@ -6,7 +6,6 @@ class Volunteer(db.Model):
     """Model for volunteer table"""
     __tablename__ = 'volunteers'
     volunteer_id = db.Column(db.Integer, primary_key=True)
-#   user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(60), nullable=False)
     first_name = db.Column(db.String(50), nullable=False)
@@ -14,6 +13,7 @@ class Volunteer(db.Model):
     applications = db.relationship(
         'Application', backref='volunteers', cascade='all, delete-orphan')
 
+    # static methid for creating a new instance and saving it to the detabase
     @staticmethod
     def create(first_name=None, last_name=None,
                email=None, password=None):
@@ -32,6 +32,7 @@ class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
 
+    # static methid for creating a new instance and saving it to the detabase
     @staticmethod
     def create(name=None):
         """Creates new entry"""
@@ -63,6 +64,7 @@ class Nonprofit(db.Model):
     opportunities = db.relationship(
         'Opportunity', backref='nonprofits', cascade='all, delete-orphan')
 
+    # static methid for creating a new instance and saving it to the detabase
     @staticmethod
     def create(name=None, description=None,
                email=None, password=None, website=None):
@@ -85,6 +87,7 @@ class Nonprofit(db.Model):
 
 
 class Opportunity(db.Model):
+    """Model for opportunities entity"""
     __tablename__ = 'opportunities'
     opp_id = db.Column(db.Integer, primary_key=True)
     nonprofit_id = db.Column(db.Integer, db.ForeignKey(
@@ -98,6 +101,7 @@ class Opportunity(db.Model):
     time = db.Column(db.Time, nullable=False, default=datetime.utcnow().time())
     status = db.Column(db.Enum('open', 'closed', default='open'), nullable=False)
 
+    # static methid for creating a new instance and saving it to the detabase
     @staticmethod
     def create(title=None, description=None, location=None, nonprofit_id=None, category_id=None, status=None):
         """Creates new entry"""
@@ -109,6 +113,7 @@ class Opportunity(db.Model):
 
 
 class Application(db.Model):
+    """Model for application entity"""
     __tablename__ = 'applications'
     application_id = db.Column(db.Integer, primary_key=True)
     opportunity_id = db.Column(db.Integer, db.ForeignKey(
@@ -120,6 +125,7 @@ class Application(db.Model):
 
 
 class Recommendation(db.Model):
+    """Model for recommendation entity"""
     __tablename__ = 'recommendations'
     id = db.Column(db.Integer, primary_key=True)
     volunteer_id = db.Column(db.Integer, db.ForeignKey(

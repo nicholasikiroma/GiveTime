@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """Handles form validations for nonprofit authentication"""
 from flask_wtf import FlaskForm
-from wtforms import StringField, IntegerField, TextAreaField, PasswordField, SubmitField
+from wtforms import StringField, URLField, TextAreaField, PasswordField, SubmitField, EmailField
 from wtforms.validators import InputRequired, Length, EqualTo
 from wtforms.widgets import TextArea
 from flask_ckeditor import CKEditorField
@@ -12,7 +12,7 @@ class NonprofitSignUpForm(FlaskForm):
     name = StringField(label='Organisation Name', validators=
                            [InputRequired(message="Organisation name cannot be blank")])
 
-    email = StringField(label='Email Address',
+    email = EmailField(label='Email Address',
                         validators=[InputRequired(message="email name should not be blank"),
                                     Length(max=45, message="Email should have less than 45 characters")])
 
@@ -20,18 +20,18 @@ class NonprofitSignUpForm(FlaskForm):
                              [InputRequired(message="Password should not be left blank"),
                               Length(min=7, message="Password too short")])
     
-    description = TextAreaField(lable='Description',
+    description = TextAreaField(label='Description',
                                 validators=[InputRequired(message='Provide short description of your NGO')])
     
-    phone = IntegerField(lable='Description',
-                                validators=[InputRequired(message='Enter a valid phone number'),
-                                            Length(max=11, min=11)])
+#    phone = IntegerField(lable='Description',
+#                                validators=[InputRequired(message='Enter a valid phone number'),
+#                                            Length(max=11, min=11)])
 
-    website = StringField(label='Website URL')
+    website = URLField(label='Website URL')
 
-    city = StringField(label='City', validators=[InputRequired(message='Provide city')])
+#    city = StringField(label='City', validators=[InputRequired(message='Provide city')])
 
-    state = StringField(label='State', validators=[InputRequired(message='Provide city')])
+#    state = StringField(label='State', validators=[InputRequired(message='Provide city')])
 
 
 
@@ -40,11 +40,11 @@ class NonprofitSignUpForm(FlaskForm):
                               Length(max=10, message="Password too long"),
                               EqualTo('password', message="Passwords do not match")])
 
-    address = StringField(label='Address', validators=[InputRequired(message='Provide Address')])
+#    address = StringField(label='Address', validators=[InputRequired(message='Provide Address')])
 
-    cac_num = StringField(label='CAC Registration No:',
-                          validators=[InputRequired(message='Provide a valid reg number')])
-    submit = SubmitField(label= 'Create Account')
+#    cac_num = StringField(label='CAC Registration No:',
+#                          validators=[InputRequired(message='Provide a valid reg number')])
+#    submit = SubmitField(label= 'Create Account')
 
 
 

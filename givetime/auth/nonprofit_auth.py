@@ -13,23 +13,23 @@ nonprofit_bp = Blueprint('nonprofit_auth',
 @nonprofit_bp.route('/register', methods=['Post', 'GET'])
 def nonprofit_reg():
     """Renders registraton page for nonprofit"""
-#    form = NonprofitSignUpForm()
+    form = NonprofitSignUpForm()
 
     if request.method == 'POST' and form.validate_on_submit():
         name = request.form.get('name')
         email = request.form.get('email')
         password = request.form.get('password')
-        bio = request.form.get('description')
+        description = request.form.get('description')
         website_url = request.form.get('website')
-        city = request.form.get('city')
-        state = request.form.get('state')
+ #       city = request.form.get('city')
+#        state = request.form.get('state')
         # Implement AJAX Verification of CAC num
         status = request.form.get('cac_num')
-        phone_no = request.form.get('phone')
+#        phone_no = request.form.get('phone')
         address = request.form.get('address')
 
         # checks if username exists in database
-        from givetime.models import Nonprofit
+        from givetime.modified_model import Nonprofit
         check_username = Nonprofit.query.filter_by(name=name).first()
         if check_username:
             flash(f'{name} already exists....try something different.')
@@ -43,19 +43,20 @@ def nonprofit_reg():
             return redirect(url_for('sign_up'))
 
         password_hash = generate_password_hash(password)
-        new_nonprofit = Nonprofit()
 
-        new_nonprofit.create(name=name, email=email,
-                             password=password_hash, description=bio,
-                             city=city, phone=phone_no, address=address,
-                             state=state, website=website_url, status=False)
-
+        Nonprofit.create(name=name, email=email,
+                         password=password_hash, description=description,
+                         website=website_url)
+    
         flash('Account created successfully!')
         return redirect(url_for('login'))
 
-    return render_template('auth/signup_nonprofit.html') # form=form)
+    return render_template('auth/signup_nonprofit.html', form=form)
 
 
+from givetime import login_manager
+
+@login_manager.user_loader
 @nonprofit_bp.route('/login')
 def nonprofit_login():
     """Renders registraton page for nonprofit"""
@@ -65,7 +66,7 @@ def nonprofit_login():
         email = request.form.get('email')
         password = request.form.get('password')
 
-        from givetime.models import Nonprofit
+        from givetime.modified_model import Nonprofit
         user_email = Nonprofit.query.filter_by(email=email).first()
         if user_email and check_password_hash(user_email.password_hash, password):
             login_user(user_email)

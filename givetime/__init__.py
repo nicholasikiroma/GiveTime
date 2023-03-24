@@ -3,6 +3,10 @@
 from flask import Flask, render_template
 import os
 from flask_sqlalchemy import SQLAlchemy
+from flask_login import LoginManager
+
+
+login_manager = LoginManager()
 
 
 db = SQLAlchemy()
@@ -17,6 +21,7 @@ def create_app():
     app.secret_key = '8745f7abde63c4ba78c4d60c863ded4eaf4bdf239dc3d2c866364629ab07f73b'
 
     db.init_app(app)
+    login_manager.init_app(app)
 
 
     @app.route('/')
@@ -34,6 +39,11 @@ def create_app():
     @app.route('/about')
     def about():
         return render_template('about.html')
+    
+    
+    @app.route('/nonprofit/dashboard')
+    def dashboard():
+        return "Nonprofit dashboard"
 
 
     from givetime.auth.nonprofit_auth import nonprofit_bp
