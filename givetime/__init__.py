@@ -39,11 +39,6 @@ def create_app():
     @app.route('/about')
     def about():
         return render_template('about.html')
-    
-    
-    @app.route('/nonprofit/dashboard')
-    def dashboard():
-        return "Nonprofit dashboard"
 
 
     from givetime.auth.nonprofit_auth import nonprofit_bp
@@ -52,9 +47,7 @@ def create_app():
     app.register_blueprint(nonprofit_bp)
     app.register_blueprint(volunteer_bp)
 
-
-    from givetime import modified_model
-    with app.app_context():
-        db.create_all()
+    from givetime.dashboard.nonprofit_dashboard import dashboard_bp
+    app.register_blueprint(dashboard_bp)
 
     return app

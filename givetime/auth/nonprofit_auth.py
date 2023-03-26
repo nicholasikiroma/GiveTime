@@ -49,7 +49,7 @@ def nonprofit_reg():
                          website=website_url)
     
         flash('Account created successfully!')
-        return redirect(url_for('login'))
+        return redirect(url_for('index'))
 
     return render_template('auth/signup_nonprofit.html', form=form)
 
@@ -57,7 +57,7 @@ def nonprofit_reg():
 from givetime import login_manager
 
 @login_manager.user_loader
-@nonprofit_bp.route('/login')
+@nonprofit_bp.route('/login', methods=['POST', 'GET'])
 def nonprofit_login():
     """Renders registraton page for nonprofit"""
     form = NonprofitLoginForm()
@@ -70,12 +70,12 @@ def nonprofit_login():
         user_email = Nonprofit.query.filter_by(email=email).first()
         if user_email and check_password_hash(user_email.password_hash, password):
             login_user(user_email)
-            return redirect(url_for('index'))
+            return redirect(url_for('dashboard.index'))
         else:
             flash('email/password Incorrect')
-            return redirect(url_for('nonprofit_login'))
+            return redirect(url_for('nonprofit_auth.nonprofit_login'))
 
-    return render_template('auth/nonprofit_signup.html', form=form)
+    return render_template('auth/login_nonprofit.html', form=form)
 
 
 @nonprofit_bp.route("/logout")
