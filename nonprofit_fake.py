@@ -2,18 +2,20 @@
 from faker import Faker
 from faker.providers import DynamicProvider
 
-category_provider = DynamicProvider(
-     provider_name="categories",
-     elements=["Animals", "Disaster Relief", "Education",
-               "Environment", "Social Justice & Equity", "Health",
-               "Life Skils", "Poverty", "Senior Services"],
+nonprofit_provider = DynamicProvider(
+     provider_name="ngo_name",
+     elements=["GreenThumb", "HealthFirst", "Animal Allies", "YouthBuilders",
+               "ArtReach", "HomeSafe", "HopeWorks", "FoodForAll", "TechBridge",
+               "CultureConnect", "Minful Matters", "CommunityBuilders", "Ocean Guardians",
+               "Brighter Futures", "HealthLink", "Creative Impact", "HomeFront", "SafeHarbor",
+               "FoodForThought", "LiteracyLink"],
 )
 
 
 
 fake = Faker()
 # then add new provider to faker instance
-fake.add_provider(category_provider)
+fake.add_provider(nonprofit_provider)
 
 def create_category(n):
     from givetime import create_app
@@ -39,7 +41,7 @@ def create_nonprofits(n):
     from givetime.modified_model import Nonprofit
     for _ in range(n):
         
-        name = fake.company()
+        name = fake.unique.ngo_name()
         password_hash = fake.password()
         email = fake.unique.email()
         description = fake.paragraph()
@@ -72,6 +74,6 @@ def create_opportunity(n):
 
 
 print("Populating database...")
-create_opportunity(1)
+create_nonprofits(19)
 print("Populating complete")
 

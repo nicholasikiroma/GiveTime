@@ -9,7 +9,7 @@
             GiveTime
         </a>
         <div class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
-            <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
+            <div class="p-6 space-y-4 md:space-y-3 sm:p-8">
                 <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                     Create Account
                 </h1>
@@ -20,7 +20,7 @@
                         {% endfor %}
                     {% endwith %}
                 </div> 
-                <form class="space-y-4 md:space-y-6" action="{{ url_for('volunteer_auth.volunteer_reg') }}" method="POST">
+                <form class="space-y-1 md:space-y-2.5" action="{{ url_for('volunteer_auth.volunteer_reg') }}" method="POST">
                     {{ form.hidden_tag() }}
 
                     <div>
@@ -44,6 +44,34 @@
                         {% if form.last_name.errors %}
                                 <ul class="errors">
                                     {% for error in form.last_name.errors %}
+                                    <li><small class="text-red-500">{{ error }}</small></li>
+                                    {% endfor %}
+                                </ul>
+                        {% endif %}
+                    
+                    </div>
+
+                    <div>
+                        {{ form.skill.label(class="block mb-2 text-sm font-medium text-gray-900 dark:text-white") }}
+                        {{ form.skill(class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500", placeholder="Mary") }}
+                        
+                        {% if form.skill.errors %}
+                                <ul class="errors">
+                                    {% for error in form.skill.errors %}
+                                    <li><small class="text-red-500">{{ error }}</small></li>
+                                    {% endfor %}
+                                </ul>
+                        {% endif %}
+                    
+                    </div>
+
+                    <div>
+                        {{ form.location.label(class="block mb-2 text-sm font-medium text-gray-900 dark:text-white") }}
+                        {{ form.location(class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500", placeholder="Mary") }}
+                        
+                        {% if form.location.errors %}
+                                <ul class="errors">
+                                    {% for error in form.location.errors %}
                                     <li><small class="text-red-500">{{ error }}</small></li>
                                     {% endfor %}
                                 </ul>

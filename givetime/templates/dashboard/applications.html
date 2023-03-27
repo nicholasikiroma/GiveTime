@@ -29,7 +29,7 @@
         <div class="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
             <ul class="space-y-2 font-medium">
                 <li>
-                    <a href="#"
+                    <a href="{{ url_for('dashboard.index')}}"
                         class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
                         <svg aria-hidden="true"
                             class="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
@@ -55,6 +55,12 @@
                             class="inline-flex items-center justify-center px-2 ml-3 text-sm font-medium text-gray-800 bg-gray-200 rounded-full dark:bg-gray-700 dark:text-gray-300">Pro</span>
                     </a>
                 </li>
+                <li>
+                    <a href="#" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+                       <svg aria-hidden="true" class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd"></path></svg>
+                       <span class="flex-1 ml-3 whitespace-nowrap">Edit Created Opportinities</span>
+                    </a>
+                 </li>
                 <li>
                     <a href="#"
                         class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
@@ -106,8 +112,8 @@
             <div class="flex mb-4 rounded bg-gray-50 dark:bg-gray-800">
 
                 <div class="relative overflow-x-auto shadow-md sm:rounded-lg w-full">
-                    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <table class="w-full text-l text-left text-gray-500 dark:text-gray-400">
+                        <thead class="font-medium text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
                                 <th scope="col" class="px-6 py-3">
                                     First Name
@@ -129,97 +135,97 @@
                         <tbody>
                             <tr class="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
                                 <th scope="row"
-                                    class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    Apple MacBook Pro 17"
+                                    class="px-6 py-4 text-sm text-gray-700 whitespace-nowrap dark:text-white">
+                                    Michael
                                 </th>
-                                <td class="px-6 py-4">
-                                    Silver
+                                <td class="px-6 py-4  text-sm text-gray-700 whitespace-nowrap dark:text-white">
+                                    Okafor
                                 </td>
-                                <td class="px-6 py-4">
-                                    Laptop
+                                <td class="px-6 py-4 text-sm text-gray-700 whitespace-nowrap dark:text-white">
+                                    Writer
                                 </td>
-                                <td class="px-6 py-4">
-                                    $2999
+                                <td class="px-6 py-4 text-sm text-gray-700 whitespace-nowrap dark:text-white">
+                                    michealokafor@gmail.com
                                 </td>
-                                <td class="px-6 py-4">
-                                    <a href="#"
-                                        class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                                <td class="px-6 py-4 space-x-2">
+                                    <a href="#" class="font-medium text-emerald-600 dark:text-blue-500 hover:underline">Accept</a>
+                                    <a href="#" class="font-medium text-red-600 dark:text-red-500 hover:underline">Decline</a>
                                 </td>
                             </tr>
                             <tr class="border-b bg-gray-50 dark:bg-gray-800 dark:border-gray-700">
                                 <th scope="row"
-                                    class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    Microsoft Surface Pro
+                                    class="px-6 py-4 text-sm text-gray-700 whitespace-nowrap dark:text-white">
+                                    Ukeme
                                 </th>
-                                <td class="px-6 py-4">
-                                    White
+                                <td class="px-6 py-4 text-sm text-gray-700 whitespace-nowrap dark:text-white">
+                                    Ibanga
                                 </td>
-                                <td class="px-6 py-4">
-                                    Laptop PC
+                                <td class="px-6 py-4 text-sm text-gray-700 whitespace-nowrap dark:text-white">
+                                    Graphics Designer
                                 </td>
-                                <td class="px-6 py-4">
-                                    $1999
+                                <td class="px-6 py-4 text-sm text-gray-700 whitespace-nowrap dark:text-white">
+                                    ukems@gmail.com
                                 </td>
-                                <td class="px-6 py-4">
-                                    <a href="#"
-                                        class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                                <td class="px-6 py-4 space-x-2">
+                                    <a href="#" class="font-medium text-emerald-600 dark:text-blue-500 hover:underline">Accept</a>
+                                    <a href="#" class="font-medium text-red-600 dark:text-red-500 hover:underline">Decline</a>
                                 </td>
                             </tr>
                             <tr class="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
                                 <th scope="row"
                                     class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    Magic Mouse 2
+                                    Adiya
                                 </th>
-                                <td class="px-6 py-4">
-                                    Black
+                                <td class="px-6 py-4 text-sm text-gray-700 whitespace-nowrap dark:text-white">
+                                    Johnson
+                                </td>
+                                <td class="px-6 py-4 text-sm text-gray-700 whitespace-nowrap dark:text-white">
+                                    Product Manager
                                 </td>
                                 <td class="px-6 py-4">
-                                    Accessories
+                                    adida@hotmail.com
                                 </td>
-                                <td class="px-6 py-4">
-                                    $99
-                                </td>
-                                <td class="px-6 py-4">
-                                    <a href="#"
-                                        class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                                <td class="px-6 py-4 space-x-2">
+                                    <a href="#" class="font-medium text-emerald-600 dark:text-blue-500 hover:underline">Accept</a>
+                                    <a href="#" class="font-medium text-red-600 dark:text-red-500 hover:underline">Decline</a>
                                 </td>
                             </tr>
                             <tr class="border-b bg-gray-50 dark:bg-gray-800 dark:border-gray-700">
                                 <th scope="row"
                                     class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    Google Pixel Phone
+                                    Tunde
                                 </th>
-                                <td class="px-6 py-4">
-                                    Gray
+                                <td class="px-6 py-4 text-sm text-gray-700 whitespace-nowrap dark:text-white">
+                                    Adekunle
                                 </td>
-                                <td class="px-6 py-4">
-                                    Phone
+                                <td class="px-6 py-4 text-sm text-gray-700 whitespace-nowrap dark:text-white">
+                                    Developer
                                 </td>
-                                <td class="px-6 py-4">
-                                    $799
+                                <td class="px-6 py-4 text-sm text-gray-700 whitespace-nowrap dark:text-white">
+                                    adedev@gmail.com
                                 </td>
-                                <td class="px-6 py-4">
-                                    <a href="#"
-                                        class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                                <td class="px-6 py-4 space-x-2">
+                                    <a href="#" class="font-medium text-emerald-600 dark:text-blue-500 hover:underline">Accept</a>
+                                    <a href="#" class="font-medium text-red-600 dark:text-red-500 hover:underline">Decline</a>
                                 </td>
                             </tr>
                             <tr>
                                 <th scope="row"
                                     class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    Apple Watch 5
+                                    Abbas
                                 </th>
-                                <td class="px-6 py-4">
-                                    Red
+                                <td class="px-6 py-4 text-sm text-gray-700 whitespace-nowrap dark:text-white">
+                                    Danjuma
                                 </td>
-                                <td class="px-6 py-4">
-                                    Wearables
+                                <td class="px-6 py-4 text-sm text-gray-700 whitespace-nowrap dark:text-white">
+                                    Financial Analyst
                                 </td>
-                                <td class="px-6 py-4">
-                                    $999
+                                <td class="px-6 py-4 text-sm text-gray-700 whitespace-nowrap dark:text-white">
+                                    abbas4u@gmail.com
                                 </td>
-                                <td class="px-6 py-4">
-                                    <a href="#"
-                                        class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                                <td class="px-6 py-4 space-x-2">
+                                    <a href="#" class="font-medium text-emerald-600 dark:text-blue-500 hover:underline">Accept</a>
+                                    <a href="#" class="font-medium text-red-600 dark:text-red-500 hover:underline">Decline</a>
                                 </td>
                             </tr>
                         </tbody>

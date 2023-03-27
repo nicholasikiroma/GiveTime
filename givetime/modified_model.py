@@ -1,27 +1,34 @@
 from datetime import datetime
 from givetime import db
+from flask_login import UserMixin
 
 
-class Volunteer(db.Model):
+class Volunteer(db.Model, UserMixin):
     """Model for volunteer table"""
     __tablename__ = 'volunteers'
     volunteer_id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(120), unique=True, nullable=False)
+    skill = db.Column(db.String(60), nullable=True)
+    location = db.Column(db.String(60), nullable=True)
     password = db.Column(db.String(60), nullable=False)
     first_name = db.Column(db.String(50), nullable=False)
     last_name = db.Column(db.String(50), nullable=False)
     applications = db.relationship(
         'Application', backref='volunteers', cascade='all, delete-orphan')
+    
+    def get_id(self):
+           return (self.volunteer_id)
 
     # static methid for creating a new instance and saving it to the detabase
     @staticmethod
     def create(first_name=None, last_name=None,
-               email=None, password=None):
+               email=None, password=None, skill=None, location=None):
         """Creates new entry"""
         volunteer = Volunteer(first_name=first_name,
                               last_name=last_name,
                               email=email,
-                              password=password)
+                              password=password, skill=skill,
+                              location=location)
 
         db.session.add(volunteer)
         db.session.commit()
@@ -51,7 +58,7 @@ class VolunteerCategory(db.Model):
                             db.ForeignKey('categories.id'), primary_key=True)
 
 
-class Nonprofit(db.Model):
+class Nonprofit(db.Model, UserMixin):
     """Model for nonprofit table"""
     __tablename__ = 'nonprofits'
     nonprofit_id = db.Column(db.Integer, primary_key=True)
@@ -63,6 +70,11 @@ class Nonprofit(db.Model):
     website = db.Column(db.String(200), nullable=False)
     opportunities = db.relationship(
         'Opportunity', backref='nonprofits', cascade='all, delete-orphan')
+    
+    
+
+    def get_id(self):
+           return (self.nonprofit_id)
 
     # static methid for creating a new instance and saving it to the detabase
     @staticmethod
@@ -98,8 +110,7 @@ class Opportunity(db.Model):
         'categories.id'), nullable=False)
     location = db.Column(db.String(255), nullable=False)
     date = db.Column(db.Date, nullable=False, default=datetime.utcnow())
-    time = db.Column(db.Time, nullable=False, default=datetime.utcnow().time())
-    status = db.Column(db.Enum('open', 'closed', default='open'), nullable=False)
+    status = db.Column(db.Enum('open', 'closed'), default='open', nullable=False)
 
     # static methid for creating a new instance and saving it to the detabase
     @staticmethod
@@ -121,7 +132,7 @@ class Application(db.Model):
     volunteer_id = db.Column(db.Integer, db.ForeignKey(
         'volunteers.volunteer_id', ondelete='CASCADE'), nullable=False)
     status = db.Column(db.Enum('pending', 'accepted',
-                       'declined', default='pending'), nullable=False)
+                       'declined'), default='pending', nullable=False)
 
 
 class Recommendation(db.Model):

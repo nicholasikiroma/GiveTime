@@ -26,11 +26,11 @@ class VolunteerSignUpForm(FlaskForm):
                                       Length(max=40, message="Password too long"),
                                       EqualTo('password', message="Passwords do not match")])
     
-#    skills = TextAreaField(lable='Skill',
-#                                validators=[InputRequired(message='Provide short description of your NGO')])
+    skill = StringField(label='Skill',
+                          validators=[InputRequired(message='Skill cannot be left blank')])
 
 
-#    city = StringField(label='City', validators=[InputRequired(message='Provide city')])
+    location = StringField(label='Location', validators=[InputRequired(message='Provide state of residence')])
 
 #    state = StringField(label='State', validators=[InputRequired(message='Provide city')])
 

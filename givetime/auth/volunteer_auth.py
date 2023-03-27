@@ -22,11 +22,13 @@ def volunteer_reg():
         last_name = request.form.get('last_name')
         email = request.form.get('email')
         password = request.form.get('password')
+        skill = request.form.get('skill')
+        location = request.form.get('location')
 #        city = request.form.get('city')
 #        state = request.form.get('state')     
 #        phone_no = request.form.get('phone')
 #       address = request.form.get('address')
-#        skill = request.form.get('skills')
+       
         
         # checks if email address exists in database
 
@@ -39,7 +41,8 @@ def volunteer_reg():
         try:
             password_hash = generate_password_hash(password)
             Volunteer.create(first_name=first_name, email=email,
-                             password=password_hash, last_name=last_name)
+                             password=password_hash, last_name=last_name,
+                             skill=skill, location=location)
 
             flash('Account created successfully!')
             
@@ -49,9 +52,16 @@ def volunteer_reg():
             print(f"Error: {err}")
     return render_template('auth/signup.html', form=form)
 
-from givetime import login_manager
 
+
+from givetime import login_manager
 @login_manager.user_loader
+def load_user(volunteer_id):
+    from givetime.modified_model import Volunteer
+    return Volunteer.query.get((volunteer_id))
+
+
+
 @volunteer_bp.route('/login', methods=['POST', 'GET'])
 def volunteer_login():
     """Renders registraton page for nonprofit"""

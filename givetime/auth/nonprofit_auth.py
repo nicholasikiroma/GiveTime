@@ -55,8 +55,13 @@ def nonprofit_reg():
 
 
 from givetime import login_manager
-
 @login_manager.user_loader
+def load_user(nonprofit_id):
+    from givetime.modified_model import Nonprofit
+    return Nonprofit.query.get((nonprofit_id))
+
+
+
 @nonprofit_bp.route('/login', methods=['POST', 'GET'])
 def nonprofit_login():
     """Renders registraton page for nonprofit"""
@@ -68,7 +73,7 @@ def nonprofit_login():
 
         from givetime.modified_model import Nonprofit
         user_email = Nonprofit.query.filter_by(email=email).first()
-        if user_email and check_password_hash(user_email.password_hash, password):
+        if user_email and check_password_hash(user_email.password, password):
             login_user(user_email)
             return redirect(url_for('dashboard.index'))
         else:
