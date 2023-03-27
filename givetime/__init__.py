@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """Base Flask Application for GiveTime"""
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 import os
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
@@ -72,7 +72,7 @@ opportunities = [
     "category": "Diversity/Inclusion",
     "description": "CultureConnect's Language Exchange Program aims to promote cross-cultural understanding and language learning by connecting people from different backgrounds. The project involves pairing language learners with native speakers for conversation practice, cultural exchange events, and language classes.",
     "nonprofit_name": "CultureConnect"
-    }   
+    }
 ]
 
 
@@ -113,11 +113,28 @@ def create_app():
     from givetime.dashboard.nonprofit_dashboard import dashboard_bp
     app.register_blueprint(dashboard_bp)
 
+
+    login_manager.blueprint_login_views = {
+        "nonprofit_auth" : "nonprofit_auth.nonprofit_login",
+    }
     login_manager.init_app(app)
+
+
+    @login_manager.user_loader
+    def load_user(user_id):
+        # Determine which model to load the user from based on the
+        # blueprint name
+        from givetime.modified_model import Nonprofit, Volunteer
+
+        x = Nonprofit.query.get(int(user_id))
+        if x == None:
+            x = Volunteer.query.get(int(user_id))
+
+        return x
 
     with app.app_context():
         from givetime.modified_model import Nonprofit, Category, Recommendation, Volunteer, VolunteerCategory, Application, Opportunity
-    
+
 
     migrate.init_app(app, db)
 

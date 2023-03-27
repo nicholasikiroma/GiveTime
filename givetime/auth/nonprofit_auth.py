@@ -47,19 +47,11 @@ def nonprofit_reg():
         Nonprofit.create(name=name, email=email,
                          password=password_hash, description=description,
                          website=website_url)
-    
+
         flash('Account created successfully!')
         return redirect(url_for('index'))
 
     return render_template('auth/signup_nonprofit.html', form=form)
-
-
-from givetime import login_manager
-@login_manager.user_loader
-def load_user(nonprofit_id):
-    from givetime.modified_model import Nonprofit
-    return Nonprofit.query.get((nonprofit_id))
-
 
 
 @nonprofit_bp.route('/login', methods=['POST', 'GET'])

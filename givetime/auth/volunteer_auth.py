@@ -14,7 +14,7 @@ volunteer_bp = Blueprint('volunteer_auth',
 def volunteer_reg():
     """Renders registraton page for nonprofit"""
     from givetime.auth.volunteer_validatiions import VolunteerSignUpForm
-    
+
     form = VolunteerSignUpForm()
 
     if request.method == 'POST' and form.validate_on_submit():
@@ -25,11 +25,11 @@ def volunteer_reg():
         skill = request.form.get('skill')
         location = request.form.get('location')
 #        city = request.form.get('city')
-#        state = request.form.get('state')     
+#        state = request.form.get('state')
 #        phone_no = request.form.get('phone')
 #       address = request.form.get('address')
-       
-        
+
+
         # checks if email address exists in database
 
         from givetime.modified_model import Volunteer
@@ -45,20 +45,12 @@ def volunteer_reg():
                              skill=skill, location=location)
 
             flash('Account created successfully!')
-            
+
             return redirect(url_for('index'))
-    
+
         except Exception as err:
             print(f"Error: {err}")
     return render_template('auth/signup.html', form=form)
-
-
-
-from givetime import login_manager
-@login_manager.user_loader
-def load_user(volunteer_id):
-    from givetime.modified_model import Volunteer
-    return Volunteer.query.get((volunteer_id))
 
 
 
@@ -67,14 +59,14 @@ def volunteer_login():
     """Renders registraton page for nonprofit"""
     from givetime.auth.volunteer_validatiions import VolunteerLoginForm
     form = VolunteerLoginForm()
-    
-    
+
+
     if request.method == 'POST' and form.validate_on_submit():
         email = request.form.get('email')
         password = request.form.get('password')
-        
+
         from givetime.modified_model import Volunteer
-        
+
         user_email = Volunteer.query.filter_by(email=email).first()
         if user_email and check_password_hash(user_email.password, password):
             login_user(user_email)

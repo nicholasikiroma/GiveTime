@@ -15,7 +15,6 @@ def create():
 
 
 @dashboard_bp.route('/applications')
-@login_required
 def applications():
     from givetime.modified_model import Application
 
@@ -23,6 +22,6 @@ def applications():
 
 
 @dashboard_bp.route('/')
-@login_required()
+@login_required
 def index():
     return render_template("dashboard/dashboard.html")
