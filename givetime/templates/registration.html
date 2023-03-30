@@ -1,32 +1,37 @@
 {% extends 'base.html' %} {% block content %}
 
-<section class="bg-white dark:bg-gray-900">
-    <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6">
+<section class="bg-white dark:bg-gray-900 mb-30">
+    <div class="grid grid-cols-1 py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6">
         <div class="max-w-screen-lg text-gray-500 sm:text-lg dark:text-gray-400">
             <h2 class="mb-4 text-4xl tracking-tight font-bold text-gray-900 dark:text-white">
-                Powering innovation at
-                <span class="font-extrabold">200,000+</span> companies worldwide
+                Join GiveTime and Make a Difference!
             </h2>
-            <p class="mb-4 font-light">
-                Track work across the enterprise through an open, collaborative
-                platform. Link issues across Jira and ingest data from other software
-                development tools, so your IT support and operations teams have richer
-                contextual information to rapidly respond to requests, incidents, and
-                changes.
+            <p class="mb-4 font-light text-gray-700 dark:text-gray-50">
+                Thank you for your interest in GiveTime, the web-based platform that connects volunteers with non-profit organizations.
+                We're excited to have you on board and help you find meaningful volunteering opportunities that match your skills, interests, and availability.
+
+
             </p>
-            <p class="mb-4 font-medium">
-                Deliver great service experiences fast - without the complexity of
-                traditional ITSM solutions.Accelerate critical development work,
-                eliminate toil, and deploy changes with ease.
+            <p class="mb-4 font-light text-gray-700 dark:text-gray-50">
+                To get started, please select one of the options below to register as a nonprofit or a volunteer. 
+                If you represent a non-profit organization, you'll be able to create a profile and advertise your volunteer opportunities, manage your volunteers, and track your impact. 
+                If you're a volunteer, you'll be able to create a profile and search for volunteer opportunities that match your preferences, apply for opportunities, and track your volunteer history and progress.
+            </p>
+
+            <p class="mb-4 font-light text-gray-700 dark:text-gray-50">
+                Joining GiveTime is free, easy, and only takes a few minutes. 
+                Whether you're looking to give back to your community, gain new skills, or meet like-minded people, GiveTime is the perfect platform for you. 
+                So don't hesitate, click on the button below to get started and make a difference today!
             </p>
         </div>
 
-        <div class="align-middle">
-            <a href="{{ url_for('volunteer_auth.volunteer_reg') }}"
-                class="focus:outline-none text-white bg-green-400 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Volunteer</a>
+        <div class="grid grid-cols-2 mt-20 items-center">
+                <a  href="{{ url_for('volunteer_auth.volunteer_reg') }}"
+                    class="focus:outline-none text-white bg-green-400 hover:bg-green-800 text-center focus:ring-4 focus:ring-green-300 text-xl font-bold rounded-lg px-5 py-4 mr-2 mb-20 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Volunteer</a>
 
-            <a href="{{ url_for('nonprofit_auth.nonprofit_reg') }}"
-                class="focus:outline-none text-white bg-green-400 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Nonprofit</a>
+                    <a  href="{{ url_for('nonprofit_auth.nonprofit_reg') }}"
+                    class="focus:outline-none text-white bg-green-400 hover:bg-green-800 text-center focus:ring-4 focus:ring-green-300 text-xl font-bold rounded-lg px-5 py-4 mr-2 mb-20 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Nonprofit</a>
+        
         </div>
     </div>
 </section>
