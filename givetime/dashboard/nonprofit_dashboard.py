@@ -10,12 +10,12 @@ dashboard_bp = Blueprint('dashboard',
 @dashboard_bp.route('/create', methods=['POST', "GET"])
 @login_required
 def create():
-    from givetime.modified_model import Category, Opportunity
+    from givetime.modified_model import Category, Opportunity, OpportunityCategory
     from givetime.dashboard.create_form import OpportunitiesForm
     
     
     form = OpportunitiesForm()
-    form.categories.choices = [(c.id, c.name) for c in Category.query.order_by('name')]
+    form.categories.choices = [(c.category_id, c.name) for c in Category.query.order_by('name')]
 
     if request.method == 'POST':
         title = request.form.get('title')
@@ -30,7 +30,7 @@ def create():
         
         Opportunity.create(title=title, description=description,
                                   location=location, nonprofit_id=nonprofit_id,
-                                  category_id=category.id, status=status)
+                                  category_id=category.category_id, status=status)
         
         flash("New Opportunity Created!")
 
@@ -40,9 +40,20 @@ def create():
 @dashboard_bp.route('/applications', methods=['POST', 'GET'])
 @login_required
 def applications():
-    from givetime.modified_model import Application
+    from givetime.modified_model import Application, Opportunity, Volunteer
+
+    nonprofit_id = current_user.nonprofit_id
+
+    opps = Opportunity.query.filter(Opportunity.nonprofit_id==nonprofit_id).all()
+    opp_ids = [opp.opp_id for opp in opps]
+
+    applications = Application.query.filter(Application.opportunity_id.in_(opp_ids)).all()
+
+    volunteer_ids = [app.volunteer_id for app in applications]
+
+    volunteers =  Volunteer.query.filter(Volunteer.volunteer_id.in_(volunteer_ids)).all()
     
-    return render_template("dashboard/applications.html")
+    return render_template("dashboard/applications.html", volunteers=volunteers)
 
 
 @dashboard_bp.route('/')

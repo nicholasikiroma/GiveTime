@@ -5,14 +5,26 @@ import os
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, login_required, current_user
 from flask_migrate import Migrate
+from sqlalchemy import MetaData
+
+
+convention = {
+    "ix": 'ix_%(column_0_label)s',
+    "uq": "uq_%(table_name)s_%(column_0_name)s",
+    "ck": "ck_%(table_name)s_%(constraint_name)s",
+    "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
+    "pk": "pk_%(table_name)s"
+}
+
+metadata = MetaData(naming_convention=convention)
 
 
 login_manager = LoginManager()
-db = SQLAlchemy()
+db = SQLAlchemy(metadata=metadata)
 migrate = Migrate()
 
 
-opportunities = [
+opportunitty = [
     {
     "opp_id": 1,
     "title": "Eco-Village",
@@ -100,22 +112,35 @@ def create_app():
     @app.route('/')
     def index():
         """Renders template for home page"""
+        from givetime.modified_model import Opportunity
+        from sqlalchemy.orm import joinedload
+
+        opportunities = Opportunity.query.options(
+            joinedload(Opportunity.nonprofits), joinedload(Opportunity.categories)).all()
+
+
         return render_template('index.html', opportunities=opportunities)
 
 
-    @app.route('/apply/<nonprofit_name>/<title>/<opportunity_category>/<description>')
+    @app.route('/apply/<nonprofit_name>/<string:id>')
     @login_required
-    def apply(nonprofit_name, title, opportunity_category, description):
+    def apply(nonprofit_name, id):
         """Renders template for home page"""
-        from markupsafe import escape
+        from givetime.modified_model import Opportunity
+        from sqlalchemy.orm import joinedload
 
-        name = escape(nonprofit_name)
-        opp_title = escape(title)
-        opp_category = escape(opportunity_category)
-        opp_des = escape(description)
+        x = id
+        opportunities = Opportunity.query.options(joinedload(Opportunity.nonprofits), joinedload(Opportunity.categories)).filter(Opportunity.opp_id==x).one()
 
-        return render_template('apply.html',
-                               name=name, opp_title=opp_title, opp_category=opp_category, opp_des=opp_des)
+        return render_template('apply.html', opportunities=opportunities)
+
+
+    @app.route('/application/<string:opp_id>')
+    def application(opp_id):
+        user_id = current_user.volunteer_id
+        from givetime.modified_model import Application
+        Application.create(opportunity_id=opp_id, volunteer_id=user_id)
+        return "Successful!"
 
 
     @app.route('/registration')
@@ -151,14 +176,15 @@ def create_app():
         # blueprint name
         from givetime.modified_model import Nonprofit, Volunteer
 
-        x = Nonprofit.query.get(int(user_id))
+        x = Nonprofit.query.get(str(user_id))
         if x == None:
-            x = Volunteer.query.get(int(user_id))
+            x = Volunteer.query.get(str(user_id))
 
         return x
 
     with app.app_context():
-        from givetime.modified_model import Nonprofit, Category, Recommendation, Volunteer, VolunteerCategory, Application, Opportunity
+        from givetime.modified_model import Nonprofit, Category, Recommendation, Volunteer, VolunteerCategory, Application, Opportunity, OpportunityCategory
+        db.create_all()
 
 
     migrate.init_app(app, db)

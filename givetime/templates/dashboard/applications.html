@@ -114,6 +114,7 @@
                 <div class="relative overflow-x-auto shadow-md sm:rounded-lg w-full">
                     <table class="w-full text-l text-left text-gray-500 dark:text-gray-400">
                         <thead class="font-medium text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                            
                             <tr>
                                 <th scope="col" class="px-6 py-3">
                                     First Name
@@ -133,101 +134,29 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
-                                <th scope="row"
-                                    class="px-6 py-4 text-sm text-gray-700 whitespace-nowrap dark:text-white">
-                                    Michael
-                                </th>
-                                <td class="px-6 py-4  text-sm text-gray-700 whitespace-nowrap dark:text-white">
-                                    Okafor
-                                </td>
-                                <td class="px-6 py-4 text-sm text-gray-700 whitespace-nowrap dark:text-white">
-                                    Writer
-                                </td>
-                                <td class="px-6 py-4 text-sm text-gray-700 whitespace-nowrap dark:text-white">
-                                    michealokafor@gmail.com
-                                </td>
-                                <td class="px-6 py-4 space-x-2">
-                                    <a href="#" class="font-medium text-emerald-600 dark:text-blue-500 hover:underline">Accept</a>
-                                    <a href="#" class="font-medium text-red-600 dark:text-red-500 hover:underline">Decline</a>
-                                </td>
-                            </tr>
-                            <tr class="border-b bg-gray-50 dark:bg-gray-800 dark:border-gray-700">
-                                <th scope="row"
-                                    class="px-6 py-4 text-sm text-gray-700 whitespace-nowrap dark:text-white">
-                                    Ukeme
-                                </th>
-                                <td class="px-6 py-4 text-sm text-gray-700 whitespace-nowrap dark:text-white">
-                                    Ibanga
-                                </td>
-                                <td class="px-6 py-4 text-sm text-gray-700 whitespace-nowrap dark:text-white">
-                                    Graphics Designer
-                                </td>
-                                <td class="px-6 py-4 text-sm text-gray-700 whitespace-nowrap dark:text-white">
-                                    ukems@gmail.com
-                                </td>
-                                <td class="px-6 py-4 space-x-2">
-                                    <a href="#" class="font-medium text-emerald-600 dark:text-blue-500 hover:underline">Accept</a>
-                                    <a href="#" class="font-medium text-red-600 dark:text-red-500 hover:underline">Decline</a>
-                                </td>
-                            </tr>
-                            <tr class="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
-                                <th scope="row"
-                                    class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    Adiya
-                                </th>
-                                <td class="px-6 py-4 text-sm text-gray-700 whitespace-nowrap dark:text-white">
-                                    Johnson
-                                </td>
-                                <td class="px-6 py-4 text-sm text-gray-700 whitespace-nowrap dark:text-white">
-                                    Product Manager
-                                </td>
-                                <td class="px-6 py-4">
-                                    adida@hotmail.com
-                                </td>
-                                <td class="px-6 py-4 space-x-2">
-                                    <a href="#" class="font-medium text-emerald-600 dark:text-blue-500 hover:underline">Accept</a>
-                                    <a href="#" class="font-medium text-red-600 dark:text-red-500 hover:underline">Decline</a>
-                                </td>
-                            </tr>
-                            <tr class="border-b bg-gray-50 dark:bg-gray-800 dark:border-gray-700">
-                                <th scope="row"
-                                    class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    Tunde
-                                </th>
-                                <td class="px-6 py-4 text-sm text-gray-700 whitespace-nowrap dark:text-white">
-                                    Adekunle
-                                </td>
-                                <td class="px-6 py-4 text-sm text-gray-700 whitespace-nowrap dark:text-white">
-                                    Developer
-                                </td>
-                                <td class="px-6 py-4 text-sm text-gray-700 whitespace-nowrap dark:text-white">
-                                    adedev@gmail.com
-                                </td>
-                                <td class="px-6 py-4 space-x-2">
-                                    <a href="#" class="font-medium text-emerald-600 dark:text-blue-500 hover:underline">Accept</a>
-                                    <a href="#" class="font-medium text-red-600 dark:text-red-500 hover:underline">Decline</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row"
-                                    class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    Abbas
-                                </th>
-                                <td class="px-6 py-4 text-sm text-gray-700 whitespace-nowrap dark:text-white">
-                                    Danjuma
-                                </td>
-                                <td class="px-6 py-4 text-sm text-gray-700 whitespace-nowrap dark:text-white">
-                                    Financial Analyst
-                                </td>
-                                <td class="px-6 py-4 text-sm text-gray-700 whitespace-nowrap dark:text-white">
-                                    abbas4u@gmail.com
-                                </td>
-                                <td class="px-6 py-4 space-x-2">
-                                    <a href="#" class="font-medium text-emerald-600 dark:text-blue-500 hover:underline">Accept</a>
-                                    <a href="#" class="font-medium text-red-600 dark:text-red-500 hover:underline">Decline</a>
-                                </td>
-                            </tr>
+                            {% for volunteer in volunteers %}
+                            
+                                <tr class="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
+                                    <th scope="row"
+                                        class="px-6 py-4 text-sm text-gray-700 whitespace-nowrap dark:text-white">
+                                        {{ volunteer.first_name}}
+                                    </th>
+                                    <td class="px-6 py-4  text-sm text-gray-700 whitespace-nowrap dark:text-white">
+                                        {{ volunteer.last_name }}
+                                    </td>
+                                    <td class="px-6 py-4 text-sm text-gray-700 whitespace-nowrap dark:text-white">
+                                        {{ volunteer.skill }}
+                                    </td>
+                                    <td class="px-6 py-4 text-sm text-gray-700 whitespace-nowrap dark:text-white">
+                                        {{ volunteer.email }}
+                                    </td>
+                                    <td class="px-6 py-4 space-x-2">
+                                        <a href="#" class="font-medium text-emerald-600 dark:text-blue-500 hover:underline">Accept</a>
+                                        <a href="#" class="font-medium text-red-600 dark:text-red-500 hover:underline">Decline</a>
+                                    </td>
+                                </tr>
+
+                            {% endfor %}
                         </tbody>
                     </table>
                 </div>

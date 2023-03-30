@@ -11,7 +11,7 @@ class OpportunitiesForm(FlaskForm):
     status = SelectField(label='Status', choices=['open', 'closed'], validate_choice=True)
 
 
-    categories = SelectField(label='Categories', coerce=int)
+    categories = SelectField(label='Categories', coerce=str)
 
     description = TextAreaField(label='Description', validators=
                                 [InputRequired("Briefly explain the details of your project")])
