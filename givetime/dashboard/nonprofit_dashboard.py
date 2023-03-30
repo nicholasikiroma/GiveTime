@@ -2,6 +2,7 @@
 """Blueprint for Nonprofit dashboard"""
 from flask import Blueprint, render_template, flash, redirect, request, url_for
 from flask_login import login_required, current_user
+from flask_mail import Message
 
 dashboard_bp = Blueprint('dashboard',
                          __name__, url_prefix='/nonprofit/dashboard')
@@ -60,3 +61,20 @@ def applications():
 @login_required
 def index():
     return render_template("dashboard/dashboard.html")
+
+
+@dashboard_bp.route('/accept/<string:user_email>/<string:name>', methods=['GET'])
+def accept(user_email, name):
+
+    if request.method == 'GET':
+        msg = Message("Testing",
+                    sender="givetimeng@gmail.com",
+                    recipients=[user_email])
+
+        msg.html = f"<b>Congrats {name} ...It Works!</b>"
+        
+        from givetime import mail
+        mail.send(msg)
+
+        return "Invite Sent!"
+

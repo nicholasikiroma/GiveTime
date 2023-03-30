@@ -151,7 +151,7 @@
                                         {{ volunteer.email }}
                                     </td>
                                     <td class="px-6 py-4 space-x-2">
-                                        <a href="#" class="font-medium text-emerald-600 dark:text-blue-500 hover:underline">Accept</a>
+                                        <a href="{{ url_for('dashboard.accept', user_email=volunteer.email, name=volunteer.first_name)}}" class="font-medium text-emerald-600 dark:text-blue-500 hover:underline">Accept</a>
                                         <a href="#" class="font-medium text-red-600 dark:text-red-500 hover:underline">Decline</a>
                                     </td>
                                 </tr>
