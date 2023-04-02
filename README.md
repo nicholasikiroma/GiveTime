@@ -24,6 +24,3 @@ The MVP (Minimum Viable Product) for a volunteer opportunity platform with an ad
 
 - **Non-profit dashboard:** Non-profit organizations should have access to a dashboard that allows them to manage their volunteer opportunities, view and accept volunteer applications, and track volunteer hours and impact.
 
-- **Volunteer dashboard:** Volunteers should have access to a dashboard that allows them to manage their profile, view their volunteer history and progress, and communicate with non-profit organizations.
-
-These core features will provide a solid foundation for your volunteer opportunity platform, allowing volunteers and non-profit organizations to connect and engage with one another effectively. As you continue to develop and refine your platform, you can add additional features and functionality based on user feedback and business needs.

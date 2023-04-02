@@ -34,13 +34,13 @@ def create_app():
     app.config['MAIL_SERVER']='smtp.gmail.com'
     app.config['MAIL_PORT'] = 465
     app.config['MAIL_USERNAME'] = 'givetimeng@gmail.com'
-    app.config['MAIL_PASSWORD'] = 'nnzfiuriduyiaslc'
+    app.config['MAIL_PASSWORD'] = 'MAILPASSWORD'
     app.config['MAIL_USE_TLS'] = False
     app.config['MAIL_USE_SSL'] = True
 
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + os.path.join(
         base_dir, 'givetimeStorage.db')
-    app.secret_key = '8745f7abde63c4ba78c4d60c863ded4eaf4bdf239dc3d2c866364629ab07f73b'
+    app.secret_key = 'SECRET_KEY'
 
     db.init_app(app)
 
