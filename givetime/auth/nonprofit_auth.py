@@ -21,12 +21,6 @@ def nonprofit_reg():
         password = request.form.get('password')
         description = request.form.get('description')
         website_url = request.form.get('website')
- #       city = request.form.get('city')
-#        state = request.form.get('state')
-        # Implement AJAX Verification of CAC num
-        status = request.form.get('cac_num')
-#        phone_no = request.form.get('phone')
-        address = request.form.get('address')
 
         # checks if username exists in database
         from givetime.modified_model import Nonprofit
@@ -38,8 +32,7 @@ def nonprofit_reg():
         # checks if email address exists in database
         check_email = Nonprofit.query.filter_by(email=email).first()
         if check_email:
-            flash(
-                f'Nonprofit with {email} already exists....try something different.')
+            flash(f'Nonprofit with {email} already exists....try something different.')
             return redirect(url_for('sign_up'))
 
         password_hash = generate_password_hash(password)

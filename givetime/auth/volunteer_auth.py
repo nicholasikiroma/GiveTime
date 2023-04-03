@@ -9,7 +9,6 @@ volunteer_bp = Blueprint('volunteer_auth',
                          __name__, url_prefix='/auth/volunteer')
 
 
-
 @volunteer_bp.route('/register', methods=['POST', 'GET'])
 def volunteer_reg():
     """Renders registraton page for nonprofit"""
@@ -24,13 +23,6 @@ def volunteer_reg():
         password = request.form.get('password')
         skill = request.form.get('skill')
         location = request.form.get('location')
-#        city = request.form.get('city')
-#        state = request.form.get('state')
-#        phone_no = request.form.get('phone')
-#       address = request.form.get('address')
-
-
-        # checks if email address exists in database
 
         from givetime.modified_model import Volunteer
         check_email = Volunteer.query.filter_by(email=email).first()
@@ -53,13 +45,11 @@ def volunteer_reg():
     return render_template('auth/signup.html', form=form)
 
 
-
 @volunteer_bp.route('/login', methods=['POST', 'GET'])
 def volunteer_login():
     """Renders registraton page for nonprofit"""
     from givetime.auth.volunteer_validatiions import VolunteerLoginForm
     form = VolunteerLoginForm()
-
 
     if request.method == 'POST' and form.validate_on_submit():
         email = request.form.get('email')
