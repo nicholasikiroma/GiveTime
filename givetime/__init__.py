@@ -4,9 +4,9 @@
    Returns:
    -Instance of flask app
 
-   Requires-import flask, flask_sqlalchemy, flask_login, flaskmail, os 
+   Requires-import flask, flask_sqlalchemy, flask_login, flaskmail, os
 """
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, url_for
 import os
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, login_required, current_user
@@ -53,6 +53,37 @@ def create_app():
 
     db.init_app(app)
 
+    login_manager.init_app(app)
+    mail.init_app(app)
+
+    @login_manager.user_loader
+    def load_user(user_id):
+        # Determine which model to load the user from based on the
+        # blueprint name
+        from givetime.modified_model import Nonprofit, Volunteer
+
+        user = Nonprofit.query.get(str(user_id))
+        if user is None:
+            user = Volunteer.query.get(str(user_id))
+
+        return user
+
+    # Registering App blueprints
+    from givetime.auth.nonprofit_auth import nonprofit_bp
+    from givetime.auth.volunteer_auth import volunteer_bp
+    from givetime.dashboard.nonprofit_dashboard import dashboard_bp
+
+    app.register_blueprint(nonprofit_bp)
+    app.register_blueprint(volunteer_bp)
+    app.register_blueprint(dashboard_bp)
+
+    login_manager.login_view = "volunteer_auth.volunteer_login"
+    # sets login view for nonprofit blueprint
+    login_manager.blueprint_login_views = {
+        "nonprofit_auth": "nonprofit_auth.nonprofit_login",
+        "volunteer_auth": "volunteer_auth.volunteer_login",
+    }
+
     @app.route('/')
     def index():
         """Renders template for home page"""
@@ -66,7 +97,6 @@ def create_app():
         return render_template('index.html', opportunities=opportunities)
 
     @app.route('/apply/<nonprofit_name>/<string:id>')
-    @login_required
     def apply(nonprofit_name, id):
         """Renders template for application page.
 
@@ -94,6 +124,7 @@ def create_app():
         return render_template('apply.html', opportunities=opportunities)
 
     @app.route('/application/<string:opp_id>')
+    @login_required
     def application(opp_id):
         """Route for handling indivitual applicatons.
 
@@ -123,35 +154,6 @@ def create_app():
     def about():
         """Renders template for about page"""
         return render_template('about.html')
-
-    from givetime.auth.nonprofit_auth import nonprofit_bp
-    from givetime.auth.volunteer_auth import volunteer_bp
-
-    app.register_blueprint(nonprofit_bp)
-    app.register_blueprint(volunteer_bp)
-
-    from givetime.dashboard.nonprofit_dashboard import dashboard_bp
-    app.register_blueprint(dashboard_bp)
-
-    # sets login view for nonprofit blueprint
-    login_manager.blueprint_login_views = {
-        "nonprofit_auth": "nonprofit_auth.nonprofit_login",
-    }
-
-    login_manager.init_app(app)
-    mail.init_app(app)
-
-    @login_manager.user_loader
-    def load_user(user_id):
-        # Determine which model to load the user from based on the
-        # blueprint name
-        from givetime.modified_model import Nonprofit, Volunteer
-
-        user = Nonprofit.query.get(str(user_id))
-        if user is None:
-            user = Volunteer.query.get(str(user_id))
-
-        return user
 
     with app.app_context():
         # creates all tables within application context
