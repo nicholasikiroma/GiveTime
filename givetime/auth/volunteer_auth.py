@@ -5,9 +5,9 @@ from flask_login import login_user, logout_user
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
+# Declares module as blueprint
 volunteer_bp = Blueprint('volunteer_auth',
                          __name__, url_prefix='/auth/volunteer')
-
 
 @volunteer_bp.route('/register', methods=['POST', 'GET'])
 def volunteer_reg():
@@ -16,6 +16,7 @@ def volunteer_reg():
 
     form = VolunteerSignUpForm()
 
+    # check if forms pass validations when submitted
     if request.method == 'POST' and form.validate_on_submit():
         first_name = request.form.get('first_name')
         last_name = request.form.get('last_name')
@@ -31,19 +32,21 @@ def volunteer_reg():
             return redirect(url_for('volunteer_auth.volunteer_reg'))
 
         try:
+            # generates password hash
             password_hash = generate_password_hash(password)
+
+            # creates new volunteer instance
             Volunteer.create(first_name=first_name, email=email,
                              password=password_hash, last_name=last_name,
                              skill=skill, location=location)
 
             flash('Account created successfully!')
 
-            return redirect(url_for('index'))
+            return redirect(url_for('volunteer_auth.volunteer_login'))
 
         except Exception as err:
             print(f"Error: {err}")
     return render_template('auth/signup.html', form=form)
-
 
 @volunteer_bp.route('/login', methods=['POST', 'GET'])
 def volunteer_login():
@@ -67,8 +70,8 @@ def volunteer_login():
 
     return render_template('auth/login.html', form=form)
 
-
 @volunteer_bp.route("/logout")
 def logout():
+    """Logs out user"""
     logout_user()
     return redirect(url_for('index'))

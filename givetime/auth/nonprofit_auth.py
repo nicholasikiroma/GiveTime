@@ -42,7 +42,7 @@ def nonprofit_reg():
                          website=website_url)
 
         flash('Account created successfully!')
-        return redirect(url_for('index'))
+        return redirect(url_for('nonprofit_auth.nonprofit_login'))
 
     return render_template('auth/signup_nonprofit.html', form=form)
 

@@ -71,10 +71,13 @@ def accept(user_email, name):
                     sender="givetimeng@gmail.com",
                     recipients=[user_email])
 
-        msg.html = f"<b>Congrats {name} ...It Works!</b>"
+        msg.html     = f"<b>Congrats {name} ...It Works!</b>"
         
         from givetime import mail
+
         mail.send(msg)
 
-        return "Invite Sent!"
+        flash("Email invitation sent successfully!")
+
+        return redirect(url_for('dashboard.applications'))
 

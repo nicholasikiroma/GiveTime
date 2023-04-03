@@ -111,6 +111,7 @@ def create_app():
 
         # Creates new application instance
         Application.create(opportunity_id=opp_id, volunteer_id=user_id)
+
         return "Successful!"
 
     @app.route('/registration')
