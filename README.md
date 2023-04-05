@@ -31,7 +31,7 @@ Create a virtual environment and activate it
 Install dependencies
 
     cd givetime
-    pip3 install -r > requirements.txt
+    pip3 install -r requirements.txt
 
 ## Usage
 
