@@ -1,11 +1,12 @@
-from givetime import db
+from givetime.models.basemodel import BaseModel
 from sqlalchemy import event
 from datetime import datetime
 from flask_login import UserMixin
 from uuid import uuid4
+from givetime import db
 
 
-class Volunteer(db.Model, UserMixin):
+class Volunteer(BaseModel, UserMixin):
     """Model for volunteer table"""
     __tablename__ = 'volunteers'
     volunteer_id = db.Column(db.String(60),
@@ -25,22 +26,8 @@ class Volunteer(db.Model, UserMixin):
     def get_id(self):
         return (self.volunteer_id)
 
-    # static methid for creating a new instance and saving it to the detabase
-    @staticmethod
-    def create(first_name=None, last_name=None,
-               email=None, password=None, skill=None, location=None):
-        """Creates new entry"""
-        volunteer = Volunteer(first_name=first_name,
-                              last_name=last_name,
-                              email=email,
-                              password=password, skill=skill,
-                              location=location)
 
-        db.session.add(volunteer)
-        db.session.commit()
-
-
-class Category(db.Model):
+class Category(BaseModel):
     __tablename__ = 'categories'
     category_id = db.Column(db.String(60),
                             primary_key=True,
@@ -48,17 +35,8 @@ class Category(db.Model):
                             nullable=False)
     name = db.Column(db.String(50), nullable=False)
 
-    # static methid for creating a new instance and saving it to the detabase
-    @staticmethod
-    def create(name=None):
-        """Creates new entry"""
-        category = Category(name=name)
 
-        db.session.add(category)
-        db.session.commit()
-
-
-class VolunteerCategory(db.Model):
+class VolunteerCategory(BaseModel):
     """Model for volunteer category relationship"""
     __tablename__ = 'volunteer_category'
     id = db.Column(db.String(60),
@@ -71,7 +49,7 @@ class VolunteerCategory(db.Model):
                             db.ForeignKey('categories.category_id'))
 
 
-class Nonprofit(db.Model, UserMixin):
+class Nonprofit(BaseModel, UserMixin):
     """Model for nonprofit table"""
     __tablename__ = 'nonprofits'
     nonprofit_id = db.Column(db.String(60),
@@ -88,20 +66,7 @@ class Nonprofit(db.Model, UserMixin):
     def get_id(self):
         return (self.nonprofit_id)
 
-    # static methid for creating a new instance and saving it to the detabase
-    @staticmethod
-    def create(name=None, description=None,
-               email=None, password=None, website=None):
-        """Creates new entry"""
-        nonprofit = Nonprofit(name=name, website=website,
-                              email=email, description=description,
-                              password=password)
-
-        db.session.add(nonprofit)
-        db.session.commit()
-
-
-class OpportunityCategory(db.Model):
+class OpportunityCategory(BaseModel):
     """Association table between Opportunity and Category models"""
     __tablename__ = 'opportunity_category'
 
@@ -112,15 +77,8 @@ class OpportunityCategory(db.Model):
                             db.ForeignKey('categories.category_id'),
                             primary_key=True)
 
-    @staticmethod
-    def create(opp_id=None, category_id=None):
-        opp_cat = OpportunityCategory(opp_id=opp_id,
-                                      category_id=category_id)
-        db.session.add(opp_cat)
-        db.session.commit()
 
-
-class Opportunity(db.Model):
+class Opportunity(BaseModel):
     """Model for opportunities entity"""
     __tablename__ = 'opportunities'
     opp_id = db.Column(db.String(60), primary_key=True,
@@ -141,24 +99,7 @@ class Opportunity(db.Model):
                                  backref=db.backref('opportunities',
                                                     lazy='dynamic'), lazy='joined')
 
-    # static methid for creating a new instance and saving it to the detabase
-
-    @staticmethod
-    def create(title=None, description=None,
-               location=None, nonprofit_id=None,
-               category_id=None, status=None):
-        """Creates new entry"""
-        opportunity = Opportunity(title=title, description=description,
-                                  location=location,
-                                  nonprofit_id=nonprofit_id,
-                                  category_id=category_id,
-                                  status=status)
-
-        db.session.add(opportunity)
-        db.session.commit()
-
-
-class Application(db.Model):
+class Application(BaseModel):
     """Model for application entity"""
     __tablename__ = 'applications'
     application_id = db.Column(db.String(60),
@@ -172,17 +113,8 @@ class Application(db.Model):
     status = db.Column(db.Enum('pending', 'accepted',
                        'declined'), default='pending', nullable=False)
 
-    @staticmethod
-    def create(opportunity_id=None, volunteer_id=None):
-        """Creates new entry"""
-        appliication = Application(
-            opportunity_id=opportunity_id, volunteer_id=volunteer_id)
 
-        db.session.add(appliication)
-        db.session.commit()
-
-
-class Recommendation(db.Model):
+class Recommendation(BaseModel):
     """Model for recommendation entity"""
     __tablename__ = 'recommendations'
     id = db.Column(db.String(60), primary_key=True,

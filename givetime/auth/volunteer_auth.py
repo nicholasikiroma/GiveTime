@@ -25,7 +25,7 @@ def volunteer_reg():
         skill = request.form.get('skill')
         location = request.form.get('location')
 
-        from givetime.modified_model import Volunteer
+        from givetime.models.modified_model import Volunteer
         check_email = Volunteer.query.filter_by(email=email).first()
         if check_email:
             flash(f'Volunteer with {email} already exists....try something different.')
@@ -58,7 +58,7 @@ def volunteer_login():
         email = request.form.get('email')
         password = request.form.get('password')
 
-        from givetime.modified_model import Volunteer
+        from givetime.models.modified_model import Volunteer
 
         user_email = Volunteer.query.filter_by(email=email).first()
         if user_email and check_password_hash(user_email.password, password):

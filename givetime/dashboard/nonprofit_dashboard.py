@@ -11,7 +11,7 @@ dashboard_bp = Blueprint('dashboard',
 @dashboard_bp.route('/create', methods=['POST', "GET"])
 @login_required
 def create():
-    from givetime.modified_model import Category, Opportunity, OpportunityCategory
+    from givetime.models.modified_model import Category, Opportunity, OpportunityCategory
     from givetime.dashboard.create_form import OpportunitiesForm
     
     
@@ -41,7 +41,7 @@ def create():
 @dashboard_bp.route('/applications', methods=['POST', 'GET'])
 @login_required
 def applications():
-    from givetime.modified_model import Application, Opportunity, Volunteer
+    from givetime.models.modified_model import Application, Opportunity, Volunteer
 
     nonprofit_id = current_user.nonprofit_id
 

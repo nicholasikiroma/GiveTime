@@ -22,8 +22,8 @@ def nonprofit_reg():
         description = request.form.get('description')
         website_url = request.form.get('website')
 
-        # checks if username exists in database
-        from givetime.modified_model import Nonprofit
+        # checks if nonprofit name exists in database
+        from givetime.models.modified_model import Nonprofit
         check_username = Nonprofit.query.filter_by(name=name).first()
         if check_username:
             flash(f'{name} already exists....try something different.')
@@ -56,7 +56,7 @@ def nonprofit_login():
         email = request.form.get('email')
         password = request.form.get('password')
 
-        from givetime.modified_model import Nonprofit
+        from givetime.models.modified_model import Nonprofit
         user_email = Nonprofit.query.filter_by(email=email).first()
         if user_email and check_password_hash(user_email.password, password):
             login_user(user_email)

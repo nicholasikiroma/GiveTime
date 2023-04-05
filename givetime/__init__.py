@@ -60,7 +60,7 @@ def create_app():
     def load_user(user_id):
         # Determine which model to load the user from based on the
         # blueprint name
-        from givetime.modified_model import Nonprofit, Volunteer
+        from givetime.models.modified_model import Nonprofit, Volunteer
 
         user = Nonprofit.query.get(str(user_id))
         if user is None:
@@ -87,7 +87,7 @@ def create_app():
     @app.route('/')
     def index():
         """Renders template for home page"""
-        from givetime.modified_model import Opportunity
+        from givetime.models.modified_model import Opportunity
         from sqlalchemy.orm import joinedload
 
         opportunities = Opportunity.query.options(
@@ -109,7 +109,7 @@ def create_app():
 
            Requires-import joinedload from sqlalchemy.orm, Opportunity object
         """
-        from givetime.modified_model import Opportunity
+        from givetime.models.modified_model import Opportunity
         from sqlalchemy.orm import joinedload
 
         user = id
@@ -138,7 +138,7 @@ def create_app():
         """
         user_id = current_user.volunteer_id
 
-        from givetime.modified_model import Application
+        from givetime.models.modified_model import Application
 
         # Creates new application instance
         Application.create(opportunity_id=opp_id, volunteer_id=user_id)
@@ -157,7 +157,7 @@ def create_app():
 
     with app.app_context():
         # creates all tables within application context
-        from givetime.modified_model import (Nonprofit, Category,
+        from givetime.models.modified_model import (Nonprofit, Category,
                                              Recommendation, Volunteer,
                                              VolunteerCategory,
                                              Application,
