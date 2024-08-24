@@ -17,11 +17,11 @@ import os
 
 # set name conventions for database migrations
 convention = {
-    "ix": 'ix_%(column_0_label)s',
+    "ix": "ix_%(column_0_label)s",
     "uq": "uq_%(table_name)s_%(column_0_name)s",
     "ck": "ck_%(table_name)s_%(constraint_name)s",
     "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
-    "pk": "pk_%(table_name)s"
+    "pk": "pk_%(table_name)s",
 }
 
 metadata = MetaData(naming_convention=convention)
@@ -35,21 +35,21 @@ mail = Mail()
 def create_app():
     """Base configurations for flask app"""
 
-    app = Flask('__name__', template_folder='givetime/templates',
-                static_folder='givetime/static')
+    app = Flask("__name__", template_folder="templates", static_folder="static")
 
     base_dir = os.path.dirname(os.path.realpath(__file__))
 
-    app.config['MAIL_SERVER'] = 'smtp.gmail.com'
-    app.config['MAIL_PORT'] = 465
-    app.config['MAIL_USERNAME'] = 'givetimeng@gmail.com'
-    app.config['MAIL_PASSWORD'] = os.environ.get('MAILPASSWORD')
-    app.config['MAIL_USE_TLS'] = False
-    app.config['MAIL_USE_SSL'] = True
+    app.config["MAIL_SERVER"] = "smtp.gmail.com"
+    app.config["MAIL_PORT"] = 465
+    app.config["MAIL_USERNAME"] = "givetimeng@gmail.com"
+    app.config["MAIL_PASSWORD"] = os.environ.get("MAILPASSWORD")
+    app.config["MAIL_USE_TLS"] = False
+    app.config["MAIL_USE_SSL"] = True
 
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + os.path.join(
-        base_dir, 'givetimeStorage.db')
-    app.secret_key = os.environ.get('SECRET_KEY')
+        base_dir, "givetimeStorage.db"
+    )
+    app.secret_key = os.environ.get("SECRET_KEY")
 
     db.init_app(app)
 
@@ -84,30 +84,30 @@ def create_app():
         "volunteer_auth": "volunteer_auth.volunteer_login",
     }
 
-    @app.route('/')
+    @app.route("/")
     def index():
         """Renders template for home page"""
         from givetime.models.modified_model import Opportunity
         from sqlalchemy.orm import joinedload
 
         opportunities = Opportunity.query.options(
-            joinedload(Opportunity.nonprofits),
-            joinedload(Opportunity.categories)).all()
+            joinedload(Opportunity.nonprofits), joinedload(Opportunity.categories)
+        ).all()
 
-        return render_template('index.html', opportunities=opportunities)
+        return render_template("index.html", opportunities=opportunities)
 
-    @app.route('/apply/<nonprofit_name>/<string:id>')
+    @app.route("/apply/<nonprofit_name>/<string:id>")
     def apply(nonprofit_name, id):
         """Renders template for application page.
 
-           Arguments:
-           -Name of nonprofit
-           -ID of opportunity
+        Arguments:
+        -Name of nonprofit
+        -ID of opportunity
 
-           Returns:
-           -Template for application
+        Returns:
+        -Template for application
 
-           Requires-import joinedload from sqlalchemy.orm, Opportunity object
+        Requires-import joinedload from sqlalchemy.orm, Opportunity object
         """
         from givetime.models.modified_model import Opportunity
         from sqlalchemy.orm import joinedload
@@ -116,25 +116,28 @@ def create_app():
 
         # Using joinedload function to form join view of
         # nonprofits and categories tables
-        opportunities = Opportunity.query.options(
-            joinedload(Opportunity.nonprofits),
-            joinedload(Opportunity.categories)
-        ).filter(Opportunity.opp_id == user).one()
+        opportunities = (
+            Opportunity.query.options(
+                joinedload(Opportunity.nonprofits), joinedload(Opportunity.categories)
+            )
+            .filter(Opportunity.opp_id == user)
+            .one()
+        )
 
-        return render_template('apply.html', opportunities=opportunities)
+        return render_template("apply.html", opportunities=opportunities)
 
-    @app.route('/application/<string:opp_id>')
+    @app.route("/application/<string:opp_id>")
     @login_required
     def application(opp_id):
         """Route for handling indivitual applicatons.
 
-           Arguments:
-           -ID of opportunity
+        Arguments:
+        -ID of opportunity
 
-           Returns:
-           -Prints the "Successful" when executed without errors
+        Returns:
+        -Prints the "Successful" when executed without errors
 
-           Requires-import Application object
+        Requires-import Application object
         """
         user_id = current_user.volunteer_id
 
@@ -145,23 +148,29 @@ def create_app():
 
         return "Successful!"
 
-    @app.route('/registration')
+    @app.route("/registration")
     def register():
         """Renders the html template for the explore page"""
-        return render_template('registration.html')
+        return render_template("registration.html")
 
-    @app.route('/about')
+    @app.route("/about")
     def about():
         """Renders template for about page"""
-        return render_template('about.html')
+        return render_template("about.html")
 
     with app.app_context():
         # creates all tables within application context
-        from givetime.models.modified_model import (Nonprofit, Category,
-                                             Recommendation, Volunteer,
-                                             VolunteerCategory,
-                                             Application,
-                                             Opportunity, OpportunityCategory)
+        from givetime.models.modified_model import (
+            Nonprofit,
+            Category,
+            Recommendation,
+            Volunteer,
+            VolunteerCategory,
+            Application,
+            Opportunity,
+            OpportunityCategory,
+        )
+
         db.create_all()
 
     migrate.init_app(app, db)

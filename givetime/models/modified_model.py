@@ -1,3 +1,4 @@
+"""Extends BaseModel"""
 from givetime.models.basemodel import BaseModel
 from sqlalchemy import event
 from datetime import datetime
@@ -98,6 +99,7 @@ class Opportunity(BaseModel):
                                  secondary='opportunity_category',
                                  backref=db.backref('opportunities',
                                                     lazy='dynamic'), lazy='joined')
+
 
 class Application(BaseModel):
     """Model for application entity"""
